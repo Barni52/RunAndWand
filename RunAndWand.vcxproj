@@ -128,12 +128,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
+    <ClCompile Include="middleFinder.cpp" />
+    <ClCompile Include="player.cpp" />
+    <ClCompile Include="projectile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
+    <ClInclude Include="input.h" />
     <ClInclude Include="map.h" />
+    <ClInclude Include="middleFinder.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="projectile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

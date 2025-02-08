@@ -11,7 +11,7 @@ void Chunk::draw() {
 		for (int y = 0; y < CHUNK_SIZE; y++) {
 			int worldX = (chunkX * CHUNK_SIZE + x) * TILE_SIZE;
 			int worldY = (chunkY * CHUNK_SIZE + y) * TILE_SIZE;
-			DrawRectangle(worldX, worldY, 32, 32, ((x + y) % 2 == 0) ? DARKGRAY : GRAY);
+			DrawRectangle(worldX, worldY, TILE_SIZE, TILE_SIZE, ((x + y) % 2 == 0) ? DARKGRAY : GRAY);
 		}
 	}
 }
