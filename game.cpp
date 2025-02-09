@@ -18,14 +18,13 @@ void Game::Run() {
 	Map map = Map();
 
 	Camera2D camera = { 0 };
-	camera.target = { (float)player.playerX * TILE_SIZE, (float)player.playerY * TILE_SIZE };
+	camera.target = { player.playerX, player.playerY};
 	camera.offset = { 800, 450 };
 	camera.rotation = 0.0f;
 	camera.zoom = 1.0f;
 
 	while (!WindowShouldClose()) {
 
-		std::cout << projectileVector.size() << std::endl;
 		//Handle movement inpout from player
 		handleInput(player);
 
@@ -41,7 +40,7 @@ void Game::Run() {
 		updateProjectiles(projectileVector, deltaTime);
 
 		//Centers the camera to the player
-		camera.target = { (float)player.playerX * TILE_SIZE, (float)player.playerY * TILE_SIZE };
+		camera.target = { (float)player.playerX, (float)player.playerY};
 
 		BeginDrawing();
 
@@ -54,12 +53,12 @@ void Game::Run() {
 
 			//Draw player and random square
 			DrawRectangle(300 * TILE_SIZE, 300 * TILE_SIZE, 3 * TILE_SIZE, 3 * TILE_SIZE, GREEN);
-			DrawRectangle(player.playerX * TILE_SIZE, player.playerY * TILE_SIZE, 3 * TILE_SIZE, 3 * TILE_SIZE, RED);
+			DrawRectangle(player.playerX, player.playerY, 3 * TILE_SIZE, 3 * TILE_SIZE, RED);
 
 			//Draw projectiles
 			drawProjectiles(projectileVector);
 
-			DrawFPS(player.playerX * TILE_SIZE, player.playerY * TILE_SIZE + -400);
+			DrawFPS(player.playerX, player.playerY + -400);
 
 			EndMode2D();
 		EndDrawing();

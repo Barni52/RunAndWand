@@ -6,17 +6,17 @@
 
 void handleInput(Player& player) {
 	if (IsKeyDown(KEY_W) && player.playerY > 0) {
-		player.playerY--;
+		player.playerY -= player.speed;
 	}
 
 	if (IsKeyDown(KEY_A) && player.playerX > 0) {
-		player.playerX--;
+		player.playerX -= player.speed;
 	}
-	if (IsKeyDown(KEY_S) && player.playerY < 1021) {
-		player.playerY++;
+	if (IsKeyDown(KEY_S) && player.playerY < 1021 * TILE_SIZE) {
+		player.playerY += player.speed;
 	}
 
-	if (IsKeyDown(KEY_D) && player.playerX < 1021) {
-		player.playerX++;
+	if (IsKeyDown(KEY_D) && player.playerX < 1021 * TILE_SIZE) {
+		player.playerX += player.speed;
 	}
 }

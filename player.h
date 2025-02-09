@@ -4,8 +4,10 @@
 
 class Player {
 public:
-	int playerX;
-	int playerY;
-	Player(int playerX, int playerY);
+	float playerX;
+	float playerY;
+	float speed;
+
+	Player(float playerX, float playerY);
 	Projectile shoot(Player player, int mousePosX, int mousePosY);
 };

@@ -5,7 +5,7 @@
 #include <iostream>
 
 Projectile::Projectile(Player player, float directionX, float directionY) : positionX(player.playerX), positionY(player.playerY)
-,speed(50) , friendly(true), keepAlive(true), aliveTime(0) {
+,speed(1000) , friendly(true), keepAlive(true), aliveTime(0) {
 	this->directionX = player.playerX - directionX;
 	this->directionY = player.playerY - directionY;
 
@@ -14,10 +14,13 @@ Projectile::Projectile(Player player, float directionX, float directionY) : posi
 		this->directionX /= length;
 		this->directionY /= length;
 	}
+	else {
+		keepAlive = false; // this ensures that if the normalized vector is zero (aka the vector doesnt have a direction to go), that it gets deleted
+	}
 };
 
 void Projectile::draw() {
-	DrawRectangle((positionX + 1) * TILE_SIZE, (positionY + 1) * TILE_SIZE, 1 * TILE_SIZE, 1 * TILE_SIZE, YELLOW);
+	DrawRectangle(((int)positionX + 1*TILE_SIZE), ((int)positionY + 1 * TILE_SIZE), 1 * TILE_SIZE, 1 * TILE_SIZE, YELLOW);
 }
 void Projectile::update(float deltaTime) {
 	this->positionX -= directionX * speed * deltaTime;

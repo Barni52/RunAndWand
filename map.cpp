@@ -26,8 +26,8 @@ Map::Map() {
 
 void Map::loadAndRenderChunks(int playerX, int playerY) {
 
-	int playerChunkX = playerX / CHUNK_SIZE;
-	int playerChunkY = playerY / CHUNK_SIZE;
+	int playerChunkX = playerX / CHUNK_SIZE / TILE_SIZE;
+	int playerChunkY = playerY / CHUNK_SIZE / TILE_SIZE;
 	for (int x = playerChunkX - LOADED_CHUNKS; x < playerChunkX + LOADED_CHUNKS; x++) {
 		for (int y = playerChunkY - LOADED_CHUNKS; y < playerChunkY + LOADED_CHUNKS; y++) {
 			if (x >= 0 && y >= 0 && x < WORLD_SIZE / CHUNK_SIZE && y < WORLD_SIZE / CHUNK_SIZE) {
