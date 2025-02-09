@@ -7,14 +7,17 @@
 #include "projectile.h"
 #include <vector>
 #include "middleFinder.h"
+#include <memory>
+#include "enemy.h"
 
 Game::Game() {
 	InitWindow(1600, 900, "Raylib Game");
 	SetTargetFPS(60);
 }
 void Game::Run() {
-	std::vector<Projectile> projectileVector;
-	Player player(0,0);
+	std::vector<std::unique_ptr<Projectile>> projectileVector;
+	std::vector<std::unique_ptr<Enemy>> enemyVector;
+	Player player(10000, 10000);
 	Map map = Map();
 
 	Camera2D camera = { 0 };
@@ -22,6 +25,11 @@ void Game::Run() {
 	camera.offset = { 800, 450 };
 	camera.rotation = 0.0f;
 	camera.zoom = 1.0f;
+
+	//test
+	Enemy e(0, 400);
+	enemyVector.push_back(std::make_unique<Enemy>(e));
+	//
 
 	while (!WindowShouldClose()) {
 
@@ -31,13 +39,16 @@ void Game::Run() {
 		//Handle shooting
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
 			Vector2 mousePos = GetMousePosition();
-			Projectile p = player.shoot(player, getTileCoordinateX((int)mousePos.x, player.playerX - 1) , getTileCoordinateY((int)mousePos.y, player.playerY - 1));
-			projectileVector.push_back(p);
+			Projectile p = player.shoot(player, getTileCoordinateX((int)mousePos.x, (int)player.playerX - 1) , getTileCoordinateY((int)mousePos.y, (int)player.playerY - 1));
+			projectileVector.push_back(std::make_unique<Projectile>(p));
 		}
 
 		//Update projectiles
 		float deltaTime = GetFrameTime();
 		updateProjectiles(projectileVector, deltaTime);
+
+		//Update enemies
+		updateEnemies(enemyVector, deltaTime, player);
 
 		//Centers the camera to the player
 		camera.target = { (float)player.playerX, (float)player.playerY};
@@ -49,16 +60,19 @@ void Game::Run() {
 			BeginMode2D(camera);
 
 			//Render and update chunks
-			map.loadAndRenderChunks(player.playerX, player.playerY);
+			map.loadAndRenderChunks(player);
 
 			//Draw player and random square
 			DrawRectangle(300 * TILE_SIZE, 300 * TILE_SIZE, 3 * TILE_SIZE, 3 * TILE_SIZE, GREEN);
-			DrawRectangle(player.playerX, player.playerY, 3 * TILE_SIZE, 3 * TILE_SIZE, RED);
+			DrawRectangle((int)player.playerX, (int)player.playerY, 3 * TILE_SIZE, 3 * TILE_SIZE, BLUE);
+
+			//Render enemies
+			drawEnemies(enemyVector);
 
 			//Draw projectiles
 			drawProjectiles(projectileVector);
 
-			DrawFPS(player.playerX, player.playerY + -400);
+			DrawFPS((int)player.playerX, (int)player.playerY + -400);
 
 			EndMode2D();
 		EndDrawing();

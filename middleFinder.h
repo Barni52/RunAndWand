@@ -1,5 +1,5 @@
 #pragma once
 
-int getTileCoordinateX(int mousePosX, int playerX);
-int getTileCoordinateY(int mousePosY, int playerY);
+int getTileCoordinateX(const int mousePosX, const int playerX);
+int getTileCoordinateY(const int mousePosY, const int playerY);
 

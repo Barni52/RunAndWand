@@ -4,6 +4,7 @@
 #define WORLD_SIZE 1024 // Defines the world size in tiles
 #define LOADED_CHUNKS 6 // Defines how many chunks will be loaded in each direction (number of chunks loaded = (LOADED_CHUNKS*2)^2)
 #include <memory>
+class Player;
 
 class Chunk {
 private:
@@ -11,7 +12,7 @@ private:
 	int chunkY;
 public:
 	Chunk(int chunkX, int chunkY);
-	void draw();
+	void draw() const;
 };
 
 class Map {
@@ -19,5 +20,5 @@ private:
 	std::unique_ptr<Chunk> chunks[WORLD_SIZE / CHUNK_SIZE][WORLD_SIZE / CHUNK_SIZE];
 public:
 	Map();
-	void loadAndRenderChunks(int playerX, int playerY);
+	void loadAndRenderChunks(Player& player);
 };

@@ -9,5 +9,5 @@ public:
 	float speed;
 
 	Player(float playerX, float playerY);
-	Projectile shoot(Player player, int mousePosX, int mousePosY);
+	Projectile shoot(const Player& player, const int mousePosX, const int mousePosY);
 };

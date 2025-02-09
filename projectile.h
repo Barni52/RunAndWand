@@ -22,9 +22,9 @@ public:
 	bool keepAlive;
 	int aliveTime;
 
-	void draw();
+	void draw() const;
 	void update(float deltaTime);
 };
 
-void drawProjectiles(std::vector<Projectile> projectileVector);
-void updateProjectiles(std::vector<Projectile>& projectileVector, float deltaTime);
+void drawProjectiles(const std::vector<std::unique_ptr<Projectile>>& projectileVector);
+void updateProjectiles(std::vector<std::unique_ptr<Projectile>>& projectileVector, float deltaTime);
