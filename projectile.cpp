@@ -4,10 +4,10 @@
 #include "map.h"
 #include <iostream>
 
-Projectile::Projectile(Player player, float directionX, float directionY) : positionX(player.playerX), positionY(player.playerY)
+Projectile::Projectile(Player player, float directionX, float directionY) : Entity(player.x, player.y, 10)
 ,speed(1000) , friendly(true), keepAlive(true), aliveTime(0) {
-	this->directionX = player.playerX - directionX;
-	this->directionY = player.playerY - directionY;
+	this->directionX = player.x - directionX;
+	this->directionY = player.y - directionY;
 
 	float length = sqrt(this->directionX * this->directionX + this->directionY * this->directionY);
 	if (length != 0) { // Prevent division by zero
@@ -20,11 +20,11 @@ Projectile::Projectile(Player player, float directionX, float directionY) : posi
 };
 
 void Projectile::draw() const{
-	DrawRectangle(((int)positionX + 1*TILE_SIZE), ((int)positionY + 1 * TILE_SIZE), 1 * TILE_SIZE, 1 * TILE_SIZE, YELLOW);
+	DrawRectangle(((int)x + 1*TILE_SIZE), ((int)y + 1 * TILE_SIZE), width, width, YELLOW);
 }
 void Projectile::update(float deltaTime) {
-	this->positionX -= directionX * speed * deltaTime;
-	this->positionY -= directionY * speed * deltaTime;
+	this->x -= directionX * speed * deltaTime;
+	this->y -= directionY * speed * deltaTime;
 	aliveTime++;
 
 	if (aliveTime > 180) {

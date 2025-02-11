@@ -1,13 +1,16 @@
 #pragma once
 
 #include "projectile.h"
+#include "entity.h"
 
-class Player {
+class Player : public Entity{
 public:
-	float playerX;
-	float playerY;
+	int maxHealth;
+	int health;
 	float speed;
 
-	Player(float playerX, float playerY);
+	Player(float x, float y);
 	Projectile shoot(const Player& player, const int mousePosX, const int mousePosY);
+
+	void draw();
 };

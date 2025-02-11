@@ -7,18 +7,18 @@
 void handleInput(Player& player) {
 	Vector2 velocity = { 0, 0 };
 
-	if (IsKeyDown(KEY_W) && player.playerY > 0) {
+	if (IsKeyDown(KEY_W) && player.y > 0) {
 		velocity.y -= 1;;
 	}
 
-	if (IsKeyDown(KEY_A) && player.playerX > 0) {
+	if (IsKeyDown(KEY_A) && player.x > 0) {
 		velocity.x -= 1;;
 	}
-	if (IsKeyDown(KEY_S) && player.playerY < 1021 * TILE_SIZE) {
+	if (IsKeyDown(KEY_S) && player.y < 1021 * TILE_SIZE) {
 		velocity.y += 1;;
 	}
 
-	if (IsKeyDown(KEY_D) && player.playerX < 1021 * TILE_SIZE) {
+	if (IsKeyDown(KEY_D) && player.x < 1021 * TILE_SIZE) {
 		velocity.x += 1;;
 	}
 
@@ -28,21 +28,21 @@ void handleInput(Player& player) {
 		velocity.y *= 0.7071f;
 	}
 
-	player.playerX += velocity.x * player.speed;
-	player.playerY += velocity.y * player.speed;
+	player.x += velocity.x * player.speed;
+	player.y += velocity.y * player.speed;
 
-	if (player.playerX < 0) {
-		player.playerX = 0;
+	if (player.x < 0) {
+		player.x = 0;
 	}
 
-	if (player.playerY < 0) {
-		player.playerY = 0;
+	if (player.y < 0) {
+		player.y = 0;
 	}
-	if (player.playerX > 1021 * TILE_SIZE) {
-		player.playerX = 1021 * TILE_SIZE;
+	if (player.x > 1021 * TILE_SIZE) {
+		player.x = 1021 * TILE_SIZE;
 	}
-	if (player.playerY > 1021 * TILE_SIZE) {
-		player.playerY = 1021 * TILE_SIZE;
+	if (player.y > 1021 * TILE_SIZE) {
+		player.y = 1021 * TILE_SIZE;
 	}
 
 

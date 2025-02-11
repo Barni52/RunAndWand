@@ -17,11 +17,11 @@ Game::Game() {
 void Game::Run() {
 	std::vector<std::unique_ptr<Projectile>> projectileVector;
 	std::vector<std::unique_ptr<Enemy>> enemyVector;
-	Player player(10000, 10000);
+	Player player(100, 100);
 	Map map = Map();
 
 	Camera2D camera = { 0 };
-	camera.target = { player.playerX, player.playerY};
+	camera.target = { player.x, player.y};
 	camera.offset = { 800, 450 };
 	camera.rotation = 0.0f;
 	camera.zoom = 1.0f;
@@ -39,7 +39,7 @@ void Game::Run() {
 		//Handle shooting
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
 			Vector2 mousePos = GetMousePosition();
-			Projectile p = player.shoot(player, getTileCoordinateX((int)mousePos.x, (int)player.playerX - 1) , getTileCoordinateY((int)mousePos.y, (int)player.playerY - 1));
+			Projectile p = player.shoot(player, getTileCoordinateX((int)mousePos.x, (int)player.x - 1) , getTileCoordinateY((int)mousePos.y, (int)player.y - 1));
 			projectileVector.push_back(std::make_unique<Projectile>(p));
 		}
 
@@ -51,7 +51,7 @@ void Game::Run() {
 		updateEnemies(enemyVector, deltaTime, player);
 
 		//Centers the camera to the player
-		camera.target = { (float)player.playerX, (float)player.playerY};
+		camera.target = { (float)player.x, (float)player.y};
 
 		BeginDrawing();
 
@@ -64,7 +64,7 @@ void Game::Run() {
 
 			//Draw player and random square
 			DrawRectangle(300 * TILE_SIZE, 300 * TILE_SIZE, 3 * TILE_SIZE, 3 * TILE_SIZE, GREEN);
-			DrawRectangle((int)player.playerX, (int)player.playerY, 3 * TILE_SIZE, 3 * TILE_SIZE, BLUE);
+			player.draw();
 
 			//Render enemies
 			drawEnemies(enemyVector);
@@ -72,7 +72,7 @@ void Game::Run() {
 			//Draw projectiles
 			drawProjectiles(projectileVector);
 
-			DrawFPS((int)player.playerX, (int)player.playerY + -400);
+			DrawFPS((int)player.x, (int)player.y + -400);
 
 			EndMode2D();
 		EndDrawing();

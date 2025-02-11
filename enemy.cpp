@@ -3,24 +3,24 @@
 #include "map.h"
 
 
-Enemy::Enemy(float enemyX, float enemyY) : enemyX(enemyX), enemyY(enemyY), speed(300){};
+Enemy::Enemy(float x, float y) : Entity(x, y, 20), speed(300), keepAlive(true) {};
 
 void Enemy::draw() const {
-	DrawRectangle(((int)enemyX + 1 * TILE_SIZE), ((int)enemyY + 1 * TILE_SIZE), 2 * TILE_SIZE, 2 * TILE_SIZE, RED);
+	DrawRectangle(((int)x + 1 * TILE_SIZE), ((int)y + 1 * TILE_SIZE), width, width, RED);
 }
 
 void Enemy::update(float deltaTime, Player& player) {
-	float directionX = enemyX - player.playerX;
-	float directionY = enemyY - player.playerY;
+	float directionX = x - player.x;
+	float directionY = y - player.y;
 
-	float length = sqrt(directionX * directionX + directionY * directionY);
+	float length = (float)sqrt(directionX * directionX + directionY * directionY);
 	if (length != 0) { // Prevent division by zero
 		directionX /= length;
 		directionY /= length;
 	}
 
-	this->enemyX -= directionX * speed * deltaTime;
-	this->enemyY -= directionY * speed * deltaTime;
+	this->x -= directionX * speed * deltaTime;
+	this->y -= directionY * speed * deltaTime;
 }
 
 void drawEnemies(const std::vector<std::unique_ptr<Enemy>>& projectileVector) {

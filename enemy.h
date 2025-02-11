@@ -2,16 +2,15 @@
 
 #include <vector>
 #include "player.h"
+#include "entity.h"
 
-class Enemy {
+class Enemy : public Entity{
 public:
-	float enemyX;
-	float enemyY;
 	float speed;
 
 	bool keepAlive;
 
-	Enemy(float enemyX, float enemyY);
+	Enemy(float x, float y);
 	void draw() const;
 	void update(float deltaTime, Player& player);
 };

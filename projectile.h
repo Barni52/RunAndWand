@@ -3,15 +3,13 @@
 #include "raylib.h"
 #include <vector>
 #include "map.h"
+#include "entity.h"
 
 class Player;
 
-class Projectile {
+class Projectile : public Entity{
 public:
 	Projectile(Player player, float directionX, float directionY);
-
-	float positionX;
-	float positionY;
 
 	float directionX;
 	float directionY;
