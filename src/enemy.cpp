@@ -1,12 +1,13 @@
 #include "enemy.h"
 #include "raylib.h"
 #include "map.h"
+#include <iostream>
 
 
 Enemy::Enemy(float x, float y) : Entity(x, y, 20), speed(300), keepAlive(true) {};
 
 void Enemy::draw() const {
-	DrawRectangle(((int)x + 1 * TILE_SIZE), ((int)y + 1 * TILE_SIZE), width, width, RED);
+	DrawRectangle( (int)x, (int)y , (int)width, (int)width, RED);
 }
 
 void Enemy::update(float deltaTime, Player& player) {
@@ -14,13 +15,19 @@ void Enemy::update(float deltaTime, Player& player) {
 	float directionY = y - player.y;
 
 	float length = (float)sqrt(directionX * directionX + directionY * directionY);
-	if (length != 0) { // Prevent division by zero
+
+	float stopThreshold = 3.0f;
+	if (length <= stopThreshold) {
+		return; // Stop movement
+	}
+
+	if (length != 0) { // Prevents division by zero
 		directionX /= length;
 		directionY /= length;
 	}
 
-	this->x -= directionX * speed * deltaTime;
-	this->y -= directionY * speed * deltaTime;
+	x -= directionX * speed * deltaTime;
+	y -= directionY * speed * deltaTime;
 }
 
 void drawEnemies(const std::vector<std::unique_ptr<Enemy>>& projectileVector) {

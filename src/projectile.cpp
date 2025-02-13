@@ -4,7 +4,7 @@
 #include "map.h"
 #include <iostream>
 
-Projectile::Projectile(Player player, float directionX, float directionY) : Entity(player.x, player.y, 10)
+Projectile::Projectile(Player player, float directionX, float directionY) : Entity(player.x + 1 * TILE_SIZE, player.y + 1 * TILE_SIZE, 10)
 ,speed(1000) , friendly(true), keepAlive(true), aliveTime(0) {
 	this->directionX = player.x - directionX;
 	this->directionY = player.y - directionY;
@@ -20,7 +20,7 @@ Projectile::Projectile(Player player, float directionX, float directionY) : Enti
 };
 
 void Projectile::draw() const{
-	DrawRectangle(((int)x + 1*TILE_SIZE), ((int)y + 1 * TILE_SIZE), width, width, YELLOW);
+	DrawRectangle(((int)x), ((int)y), (int)width, (int)width, YELLOW);
 }
 void Projectile::update(float deltaTime) {
 	this->x -= directionX * speed * deltaTime;

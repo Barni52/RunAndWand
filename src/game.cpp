@@ -9,6 +9,7 @@
 #include "middleFinder.h"
 #include <memory>
 #include "enemy.h"
+#include "collision.h"
 
 Game::Game() {
 	InitWindow(1600, 900, "Raylib Game");
@@ -27,13 +28,23 @@ void Game::Run() {
 	camera.zoom = 1.0f;
 
 	//test
-	Enemy e(0, 400);
-	enemyVector.push_back(std::make_unique<Enemy>(e));
+	enemyVector.push_back(std::make_unique<Enemy>(Enemy(0, 400)));
 	//
+	int count = 0;
 
 	while (!WindowShouldClose()) {
+		count++;
+		if (count >= 100) {
+			count = 0;
+			enemyVector.push_back(std::make_unique<Enemy>(Enemy(player.x + 700, player.y)));
+			enemyVector.push_back(std::make_unique<Enemy>(Enemy(player.x - 700, player.y)));
+			enemyVector.push_back(std::make_unique<Enemy>(Enemy(player.x, player.y - 700)));
+			enemyVector.push_back(std::make_unique<Enemy>(Enemy(player.x, player.y + 700)));
+		}
 
-		//Handle movement inpout from player
+
+
+		//Handle movement input from player
 		handleInput(player);
 
 		//Handle shooting
@@ -49,6 +60,8 @@ void Game::Run() {
 
 		//Update enemies
 		updateEnemies(enemyVector, deltaTime, player);
+		killEnemies(projectileVector, enemyVector);
+		hitPlayer(player, enemyVector);
 
 		//Centers the camera to the player
 		camera.target = { (float)player.x, (float)player.y};
