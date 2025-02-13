@@ -28,8 +28,9 @@ void handleInput(Player& player) {
 		velocity.y *= 0.7071f;
 	}
 
-	player.x += velocity.x * player.speed;
-	player.y += velocity.y * player.speed;
+	//Must be cast to int unless real pos and displayed pos will be different (very bad!)
+	player.x += (int)(velocity.x * player.speed);
+	player.y += (int)(velocity.y * player.speed);
 
 	if (player.x < 0) {
 		player.x = 0;

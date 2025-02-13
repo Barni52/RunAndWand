@@ -33,14 +33,14 @@ void Game::Run() {
 	int count = 0;
 
 	while (!WindowShouldClose()) {
-		count++;
+		/*count++;
 		if (count >= 100) {
 			count = 0;
 			enemyVector.push_back(std::make_unique<Enemy>(Enemy(player.x + 700, player.y)));
 			enemyVector.push_back(std::make_unique<Enemy>(Enemy(player.x - 700, player.y)));
 			enemyVector.push_back(std::make_unique<Enemy>(Enemy(player.x, player.y - 700)));
 			enemyVector.push_back(std::make_unique<Enemy>(Enemy(player.x, player.y + 700)));
-		}
+		}*/
 
 
 
