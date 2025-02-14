@@ -12,6 +12,7 @@
 #include "collision.h"
 
 Game::Game() {
+	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(1600, 900, "Raylib Game");
 	SetTargetFPS(60);
 }
@@ -23,9 +24,9 @@ void Game::Run() {
 
 	Camera2D camera = { 0 };
 	camera.target = { player.x, player.y};
-	camera.offset = { 800, 450 };
+	camera.offset = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
 	camera.rotation = 0.0f;
-	camera.zoom = 1.0f;
+	camera.zoom = 1.0f * ((GetScreenWidth() / 1600) * (GetScreenHeight() / 900));
 
 	//test
 	enemyVector.push_back(std::make_unique<Enemy>(Enemy(0, 400)));
@@ -33,6 +34,15 @@ void Game::Run() {
 	int count = 0;
 
 	while (!WindowShouldClose()) {
+
+
+		//Zooms when the screen gets too big, so bigger res doesnt give that big of an advantage
+		if (GetScreenWidth() > 1800 || GetScreenHeight() > 1200) {
+			camera.zoom = 1.5f;
+		}
+		else {
+			camera.zoom = 1.0f;
+		}
 		/*count++;
 		if (count >= 100) {
 			count = 0;
@@ -50,7 +60,12 @@ void Game::Run() {
 		//Handle shooting
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
 			Vector2 mousePos = GetMousePosition();
-			Projectile p = player.shoot(player, getTileCoordinateX((int)mousePos.x, (int)player.x - 1) , getTileCoordinateY((int)mousePos.y, (int)player.y - 1));
+
+			//Calculates where the mouse is by, taking its position on the screen and adds it to the player coordinate which is always centered
+			//The -1 is needed so that the projectile spawns from the middle of the player instead of its upper left corner
+			int targetX = (int)(((mousePos.x - GetScreenWidth() / 2.0f) / TILE_SIZE) + player.x - 1);
+			int targetY = (int)(((mousePos.y - GetScreenHeight() / 2.0f) / TILE_SIZE) + player.y - 1);
+			Projectile p = player.shoot(targetX, targetY);
 			projectileVector.push_back(std::make_unique<Projectile>(p));
 		}
 
@@ -65,6 +80,7 @@ void Game::Run() {
 
 		//Centers the camera to the player
 		camera.target = { (float)player.x, (float)player.y};
+		camera.offset = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
 
 		BeginDrawing();
 

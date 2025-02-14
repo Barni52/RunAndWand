@@ -2,8 +2,8 @@
 
 Player::Player(float x, float y) : Entity(x, y, 30), maxHealth(100), health(40), speed(8) {}
 
-Projectile Player::shoot(const Player& player, const int mousePosX, const int mousePosY) {
-	Projectile projectile(player, (float)mousePosX, (float)mousePosY);
+Projectile Player::shoot(const int mousePosX, const int mousePosY) {
+	Projectile projectile(*this, (float)mousePosX, (float)mousePosY);
 	return projectile;
 }
 
