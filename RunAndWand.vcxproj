@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\button.cpp" />
     <ClCompile Include="src\collision.cpp" />
     <ClCompile Include="src\enemy.cpp" />
     <ClCompile Include="src\entity.cpp" />
@@ -134,17 +135,20 @@
     <ClCompile Include="src\input.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\map.cpp" />
+    <ClCompile Include="src\menu.cpp" />
     <ClCompile Include="src\middleFinder.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\projectile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\button.h" />
     <ClInclude Include="src\collision.h" />
     <ClInclude Include="src\enemy.h" />
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\input.h" />
     <ClInclude Include="src\map.h" />
+    <ClInclude Include="src\menu.h" />
     <ClInclude Include="src\middleFinder.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\projectile.h" />

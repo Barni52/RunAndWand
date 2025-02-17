@@ -11,16 +11,21 @@
 #include "enemy.h"
 #include "collision.h"
 
-Game::Game() {
+Game::Game() : player(Player(100, 100)), map(Map()){
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-	InitWindow(1600, 900, "Raylib Game");
+	InitWindow(1600, 900, "Run and Wand");
 	SetTargetFPS(60);
+	Image icon = LoadImage("resources/RAWicon.png");
+	SetWindowIcon(icon);
+	UnloadImage(icon);
+
+	projectileVector = std::vector<std::unique_ptr<Projectile>>();
+	enemyVector = std::vector<std::unique_ptr<Enemy>>();
+	menu = Menu();
+	loadMenu = true;
 }
-void Game::Run() {
-	std::vector<std::unique_ptr<Projectile>> projectileVector;
-	std::vector<std::unique_ptr<Enemy>> enemyVector;
-	Player player(100, 100);
-	Map map = Map();
+
+void Game::Run() { 
 
 	Camera2D camera = { 0 };
 	camera.target = { player.x, player.y};
@@ -34,7 +39,12 @@ void Game::Run() {
 	int count = 0;
 
 	while (!WindowShouldClose()) {
-
+		if (loadMenu) {
+			loadMenu = false;
+			if (!menu.draw(GetScreenWidth(), GetScreenHeight())) {
+				return;
+			}
+		}
 
 		//Zooms when the screen gets too big, so bigger res doesnt give that big of an advantage
 		if (GetScreenWidth() > 1800 || GetScreenHeight() > 1200) {
@@ -57,7 +67,7 @@ void Game::Run() {
 		//Handle movement input from player
 		handleInput(player);
 
-		//Handle shooting
+		//Handle clicking : pressing buttons, and shooting
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
 			Vector2 mousePos = GetMousePosition();
 
@@ -76,7 +86,13 @@ void Game::Run() {
 		//Update enemies
 		updateEnemies(enemyVector, deltaTime, player);
 		killEnemies(projectileVector, enemyVector);
-		hitPlayer(player, enemyVector);
+		if (hitPlayer(player, enemyVector)) {
+			if (!menu.draw(GetScreenWidth(), GetScreenHeight())) {
+				return;
+			} else {
+				Reset();
+			}
+		}
 
 		//Centers the camera to the player
 		camera.target = { (float)player.x, (float)player.y};
@@ -107,4 +123,14 @@ void Game::Run() {
 		EndDrawing();
 	}
 	CloseWindow();
+}
+
+void Game::Reset() {
+	projectileVector = std::vector<std::unique_ptr<Projectile>>();
+	enemyVector = std::vector<std::unique_ptr<Enemy>>();
+	player = Player(100, 100);
+}
+
+void menuRender() {
+
 }
