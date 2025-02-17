@@ -1,3 +1,4 @@
+#define RAYLIB_STATIC
 #include "raylib.h"
 #include "game.h"
 #include "map.h"
