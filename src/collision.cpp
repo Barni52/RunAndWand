@@ -36,8 +36,8 @@ bool hasCollided(Rectangle r1, Rectangle r2) {
 	if (
 		r1.x <= r2.x + r2.width &&
 		r1.x + r1.width >= r2.x &&
-		r1.y <= r2.y + r2.width &&
-		r1.y + r1.width >= r2.y
+		r1.y <= r2.y + r2.height &&
+		r1.y + r1.height >= r2.y
 		) {
 		return true;
 	}
@@ -51,7 +51,7 @@ bool hasCollided(Rectangle r1, Vector2 v) {
 		r1.x <= v.x + 1 &&
 		r1.x + r1.width >= v.x &&
 		r1.y <= v.y + 1 &&
-		r1.y + r1.width >= v.y
+		r1.y + r1.height >= v.y
 		) {
 		return true;
 	}

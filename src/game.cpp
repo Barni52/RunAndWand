@@ -29,6 +29,7 @@ Game::Game() : player(Player(100, 100, 1, 1.0f)), map(Map()){
 
 	projectileVector = std::vector<std::unique_ptr<Projectile>>();
 	enemyVector = std::vector<std::unique_ptr<Enemy>>();
+	levelUpMenu = LevelUpMenu();
 	menu = Menu();
 	loadMenu = true;
 
@@ -50,6 +51,10 @@ void Game::Run() {
 			if (!menu.draw(GetScreenWidth(), GetScreenHeight())) {
 				return;
 			}
+		}
+
+		if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
+			levelUpMenu.draw(GetScreenWidth(), GetScreenHeight());
 		}
 
 		//Zooms when the screen gets too big, so bigger res doesnt give that big of an advantage

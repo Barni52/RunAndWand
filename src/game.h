@@ -4,6 +4,7 @@
 #include "enemy.h"
 #include "button.h"
 #include "menu.h"
+#include "levelUpMenu.h"
 
 class Game{
 public:
@@ -18,6 +19,7 @@ public:
 	Player player;
 	Map map;
 	Menu menu;
+	LevelUpMenu levelUpMenu;
 	bool loadMenu;
 
 	void Reset();
