@@ -138,6 +138,7 @@
     <ClCompile Include="src\button.cpp" />
     <ClCompile Include="src\collision.cpp" />
     <ClCompile Include="src\enemy.cpp" />
+    <ClCompile Include="src\enemyLoader.cpp" />
     <ClCompile Include="src\entity.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\input.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="src\button.h" />
     <ClInclude Include="src\collision.h" />
     <ClInclude Include="src\enemy.h" />
+    <ClInclude Include="src\enemyLoader.h" />
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\input.h" />

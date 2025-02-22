@@ -72,7 +72,10 @@ void killEnemies(std::vector<std::unique_ptr<Projectile>>& projectileVector, std
 				ep->health--;
 				if (ep->health <= 0) {
 					ep->keepAlive = false;
+					
 				}
+				//This break is necessary, otherwise the projectile will kill all enemies it collides with
+				break;
 			}
 		}
 	}

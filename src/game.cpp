@@ -12,7 +12,8 @@
 #include "enemy.h"
 #include "collision.h"
 
-Game::Game() : player(Player(100, 100, 1, 1.0f)), map(Map()){
+
+Game::Game() : player(Player(100, 100, 1, 0.1f)), map(Map()){
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(1600, 900, "Run and Wand");
 	SetTargetFPS(60);
@@ -30,19 +31,13 @@ Game::Game() : player(Player(100, 100, 1, 1.0f)), map(Map()){
 	projectileVector = std::vector<std::unique_ptr<Projectile>>();
 	enemyVector = std::vector<std::unique_ptr<Enemy>>();
 	levelUpMenu = LevelUpMenu();
+	enemyLoader = EnemyLoader();
 	menu = Menu();
 	loadMenu = true;
 
 }
 
 void Game::Run() { 
-
-	//test
-	enemyVector.push_back(std::make_unique<Enemy>(Enemy(0, 400, 1)));
-	//
-
-	int count = 0;
-
 	while (!WindowShouldClose()) {
 
 		//Draws the menu, but only once
@@ -51,10 +46,21 @@ void Game::Run() {
 			if (!menu.draw(GetScreenWidth(), GetScreenHeight())) {
 				return;
 			}
+
+			//Ugly hack to stop player from shooting when the game starts instantly
+			player.lastShot = (float)GetTime();
 		}
 
-		if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
-			levelUpMenu.draw(GetScreenWidth(), GetScreenHeight());
+
+		//Spawns enemies
+		if (enemyLoader.loadEnemies(enemyVector, player)) {
+
+			if (!levelUpMenu.draw(GetScreenWidth(), GetScreenHeight())) {
+				return;
+			}
+
+			//Ugly hack to stop player from shooting when the game starts instantly
+			player.lastShot = (float)GetTime();
 		}
 
 		//Zooms when the screen gets too big, so bigger res doesnt give that big of an advantage
@@ -65,16 +71,6 @@ void Game::Run() {
 		else {
 			camera.zoom = 1.0f;
 		}
-		/*count++;
-		if (count >= 100) {
-			count = 0;
-			enemyVector.push_back(std::make_unique<Enemy>(Enemy(player.x + 700, player.y)));
-			enemyVector.push_back(std::make_unique<Enemy>(Enemy(player.x - 700, player.y)));
-			enemyVector.push_back(std::make_unique<Enemy>(Enemy(player.x, player.y - 700)));
-			enemyVector.push_back(std::make_unique<Enemy>(Enemy(player.x, player.y + 700)));
-		}*/
-
-
 
 		//Handle movement input from player
 		handleInput(player);
