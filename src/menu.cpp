@@ -1,6 +1,4 @@
 #include "menu.h"
-#include "collision.h"
-#include <iostream>
 
 Menu::Menu() {
 
@@ -15,16 +13,12 @@ bool Menu::draw(int screenWidth, int screenHeight) const {
         screenHeight / 2.0f - buttonHeight / 2.0f,
         (float)buttonWidth, (float)buttonHeight
     };
-	Entity startEntity = Entity(startButton.x, startButton.y, buttonWidth);
 
 	while (!WindowShouldClose()) {
 		BeginDrawing();
 
-			
-            
-
             Vector2 mousePoint = GetMousePosition();
-            bool hovered = hasCollided(startEntity, mousePoint.x, mousePoint.y);
+            bool hovered = hasCollided(startButton, mousePoint);
 
             // Draw
             BeginDrawing();
@@ -36,7 +30,7 @@ bool Menu::draw(int screenWidth, int screenHeight) const {
             DrawRectangleLinesEx(startButton, 3, BLACK);
 
             // Button text
-            DrawText("START", startButton.x + buttonWidth / 4, startButton.y + buttonHeight / 4, 30, BLACK);
+            DrawText("START", (int)(startButton.x + buttonWidth / 4), (int)(startButton.y + buttonHeight / 4), 30, BLACK);
 
             // Detect button click
             if (hovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {

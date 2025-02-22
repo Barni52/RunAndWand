@@ -4,8 +4,8 @@
 #include "button.h"
 #include "collision.h"
 
-class Menu {
+class LevelUpMenu {
 public:
-	Menu();
+	LevelUpMenu();
 	bool draw(int screenWidth, int screenHeight) const;
 };

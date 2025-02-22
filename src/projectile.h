@@ -9,13 +9,15 @@ class Player;
 
 class Projectile : public Entity{
 public:
-	Projectile(Player player, float directionX, float directionY);
+	Projectile(Player player, float directionX, float directionY, int penetration);
 
 	float directionX;
 	float directionY;
 
 	bool friendly;
 	float speed;
+
+	int penetration;
 
 	bool keepAlive;
 	int aliveTime;

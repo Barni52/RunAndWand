@@ -12,7 +12,7 @@
 #include "enemy.h"
 #include "collision.h"
 
-Game::Game() : player(Player(100, 100)), map(Map()){
+Game::Game() : player(Player(100, 100, 1, 1.0f)), map(Map()){
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(1600, 900, "Run and Wand");
 	SetTargetFPS(60);
@@ -20,26 +20,31 @@ Game::Game() : player(Player(100, 100)), map(Map()){
 	SetWindowIcon(icon);
 	UnloadImage(icon);
 
-	projectileVector = std::vector<std::unique_ptr<Projectile>>();
-	enemyVector = std::vector<std::unique_ptr<Enemy>>();
-	menu = Menu();
-	loadMenu = true;
-}
-
-void Game::Run() { 
 
 	Camera2D camera = { 0 };
-	camera.target = { player.x, player.y};
+	camera.target = { player.x, player.y };
 	camera.offset = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
 	camera.rotation = 0.0f;
 	camera.zoom = 1.0f * ((GetScreenWidth() / 1600) * (GetScreenHeight() / 900));
 
+	projectileVector = std::vector<std::unique_ptr<Projectile>>();
+	enemyVector = std::vector<std::unique_ptr<Enemy>>();
+	menu = Menu();
+	loadMenu = true;
+
+}
+
+void Game::Run() { 
+
 	//test
-	enemyVector.push_back(std::make_unique<Enemy>(Enemy(0, 400)));
+	enemyVector.push_back(std::make_unique<Enemy>(Enemy(0, 400, 1)));
 	//
+
 	int count = 0;
 
 	while (!WindowShouldClose()) {
+
+		//Draws the menu, but only once
 		if (loadMenu) {
 			loadMenu = false;
 			if (!menu.draw(GetScreenWidth(), GetScreenHeight())) {
@@ -51,6 +56,7 @@ void Game::Run() {
 		if (GetScreenWidth() > 1800 || GetScreenHeight() > 1200) {
 			camera.zoom = 1.5f;
 		}
+
 		else {
 			camera.zoom = 1.0f;
 		}
@@ -69,15 +75,14 @@ void Game::Run() {
 		handleInput(player);
 
 		//Handle clicking : pressing buttons, and shooting
-		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+		if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
 			Vector2 mousePos = GetMousePosition();
 
 			//Calculates where the mouse is by, taking its position on the screen and adds it to the player coordinate which is always centered
 			//The -1 is needed so that the projectile spawns from the middle of the player instead of its upper left corner
 			int targetX = (int)(((mousePos.x - GetScreenWidth() / 2.0f) / TILE_SIZE) + player.x - 1);
 			int targetY = (int)(((mousePos.y - GetScreenHeight() / 2.0f) / TILE_SIZE) + player.y - 1);
-			Projectile p = player.shoot(targetX, targetY);
-			projectileVector.push_back(std::make_unique<Projectile>(p));
+			player.shoot(targetX, targetY, projectileVector);
 		}
 
 		//Update projectiles
@@ -129,9 +134,9 @@ void Game::Run() {
 void Game::Reset() {
 	projectileVector = std::vector<std::unique_ptr<Projectile>>();
 	enemyVector = std::vector<std::unique_ptr<Enemy>>();
-	player = Player(100, 100);
-}
+	player = Player(100, 100, 1, 1.0f);
 
-void menuRender() {
-
+	//test
+	enemyVector.push_back(std::make_unique<Enemy>(Enemy(0, 400, 1)));
+	//
 }

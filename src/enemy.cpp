@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-Enemy::Enemy(float x, float y) : Entity(x, y, 20), speed(300), keepAlive(true) {};
+Enemy::Enemy(float x, float y, int health) : Entity(x, y, 20), speed(300), keepAlive(true), health(health) {};
 
 void Enemy::draw() const {
 	DrawRectangle( (int)x, (int)y , (int)width, (int)width, RED);

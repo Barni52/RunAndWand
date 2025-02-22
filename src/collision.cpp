@@ -32,12 +32,47 @@ bool hasCollided(const Entity& e1, int x, int y) {
 	}
 }
 
+bool hasCollided(Rectangle r1, Rectangle r2) {
+	if (
+		r1.x <= r2.x + r2.width &&
+		r1.x + r1.width >= r2.x &&
+		r1.y <= r2.y + r2.width &&
+		r1.y + r1.width >= r2.y
+		) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool hasCollided(Rectangle r1, Vector2 v) {
+	if (
+		r1.x <= v.x + 1 &&
+		r1.x + r1.width >= v.x &&
+		r1.y <= v.y + 1 &&
+		r1.y + r1.width >= v.y
+		) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 void killEnemies(std::vector<std::unique_ptr<Projectile>>& projectileVector, std::vector<std::unique_ptr<Enemy>>& enemyVector) {
 	for (std::unique_ptr<Projectile>& pp : projectileVector) {
 		for (std::unique_ptr<Enemy>& ep: enemyVector) {
 			if (hasCollided(*pp, *ep)) {
-				ep->keepAlive = false;
-				pp->keepAlive = false;
+				pp->penetration--;
+				if (pp->penetration <= 0) {
+					pp->keepAlive = false;
+				}
+
+				ep->health--;
+				if (ep->health <= 0) {
+					ep->keepAlive = false;
+				}
 			}
 		}
 	}

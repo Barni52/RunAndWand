@@ -1,17 +1,19 @@
 #include "player.h"
 
-Player::Player(float x, float y) : Entity(x, y, 30), maxHealth(100), health(40), speed(8) {}
+Player::Player(float x, float y, int penetration, float attackSpeed) : Entity(x, y, 30), speed(8), penetration(penetration), 
+attackSpeed(attackSpeed), lastShot(0) {
+	lastShot = GetTime();
+}
 
-Projectile Player::shoot(const int mousePosX, const int mousePosY) {
-	Projectile projectile(*this, (float)mousePosX, (float)mousePosY);
-	return projectile;
+void Player::shoot(const int mousePosX, const int mousePosY, std::vector<std::unique_ptr<Projectile>>& projectileVector) {
+	if (GetTime() - lastShot >= attackSpeed) {
+		Projectile projectile(*this, (float)mousePosX, (float)mousePosY, 1);
+		projectileVector.push_back(std::make_unique<Projectile>(projectile));
+		lastShot = GetTime();
+	}
 }
 
 void Player::draw() {
 	// Draw the player
 	DrawRectangle((int)x, (int)y, (int)width, (int)width, BLUE);
-
-	//Draw the health bar
-	DrawRectangle((int)x - 300, (int)y + 350, 600, 50, BLACK);
-	DrawRectangle((int)x - 295, (int)y + 355, (int)(590 * ((float)health/maxHealth)), 40, GREEN);
 }

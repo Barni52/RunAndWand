@@ -12,6 +12,8 @@ public:
 
 	std::vector<std::unique_ptr<Projectile>> projectileVector;
 	std::vector<std::unique_ptr<Enemy>> enemyVector;
+
+	Camera2D camera;
 	std::vector<Button> buttons;
 	Player player;
 	Map map;
