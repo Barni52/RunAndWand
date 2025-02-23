@@ -1,9 +1,7 @@
 #define _USE_MATH_DEFINES
 #include "enemyLoader.h"
 
-EnemyLoader::EnemyLoader() : currentLevel(1), numberOfEnemiesLeft(10), lastTimeEnemySpawned((float)GetTime()) {
-
-}
+EnemyLoader::EnemyLoader() : currentLevel(1), maxEnemies(6), numberOfEnemiesLeft(6), lastTimeEnemySpawned((float)GetTime()), enemySpawnRate(1.0f), enemySpeedRate(300) {}
 
 bool EnemyLoader::loadEnemies(std::vector<std::unique_ptr<Enemy>>& enemyVector, const Player& player) {
 	if ((float)GetTime() - lastTimeEnemySpawned >= 1 && numberOfEnemiesLeft > 0) {
@@ -12,7 +10,9 @@ bool EnemyLoader::loadEnemies(std::vector<std::unique_ptr<Enemy>>& enemyVector, 
 		numberOfEnemiesLeft--;
 	}
 	if (numberOfEnemiesLeft <= 0 && enemyVector.empty()){
-		numberOfEnemiesLeft = 10;
+		levelUp();
+
+		//Indicates that the player has killed all enemies, and the level up menu is shown
 		return true;
 	}
 	return false;
@@ -25,5 +25,18 @@ void EnemyLoader::spawnEnemy(std::vector<std::unique_ptr<Enemy>>& enemyVector, c
 	float spawnX = player.x + spawnRadius * cos(angle);
 	float spawnY = player.y + spawnRadius * sin(angle);
 
-	enemyVector.push_back(std::make_unique<Enemy>(spawnX, spawnY, 1));
+	enemyVector.push_back(std::make_unique<Enemy>(spawnX, spawnY, enemySpeedRate));
+}
+
+void EnemyLoader::levelUp() {
+	currentLevel++;
+	enemySpawnRate *= 0.80f;
+	enemySpeedRate *= 1.05f;
+	if (maxEnemies < 10) {
+		maxEnemies += 2;
+	}
+	else {
+		maxEnemies = (int)(1.10 * maxEnemies);
+	}
+	numberOfEnemiesLeft = maxEnemies;
 }

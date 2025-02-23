@@ -5,21 +5,22 @@
 #include <iostream>
 
 void handleInput(Player& player) {
+	float deltaTime = GetFrameTime();
 	Vector2 velocity = { 0, 0 };
 
 	if (IsKeyDown(KEY_W) && player.y > 0) {
-		velocity.y -= 1;;
+		velocity.y -= 1 * deltaTime;
 	}
 
 	if (IsKeyDown(KEY_A) && player.x > 0) {
-		velocity.x -= 1;;
+		velocity.x -= 1 * deltaTime;
 	}
 	if (IsKeyDown(KEY_S) && player.y < 1021 * TILE_SIZE) {
-		velocity.y += 1;;
+		velocity.y += 1 * deltaTime;
 	}
 
 	if (IsKeyDown(KEY_D) && player.x < 1021 * TILE_SIZE) {
-		velocity.x += 1;;
+		velocity.x += 1 * deltaTime;
 	}
 
 	// Normalize speed when moving diagonally
@@ -29,8 +30,8 @@ void handleInput(Player& player) {
 	}
 
 	//Must be cast to int unless real pos and displayed pos will be different (very bad!)
-	player.x += (int)(velocity.x * player.speed);
-	player.y += (int)(velocity.y * player.speed);
+	player.x += (velocity.x * player.speed);
+	player.y += (velocity.y * player.speed);
 
 	if (player.x < 0) {
 		player.x = 0;

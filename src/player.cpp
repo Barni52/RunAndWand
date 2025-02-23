@@ -1,6 +1,6 @@
 #include "player.h"
 
-Player::Player(float x, float y, int penetration, float attackSpeed) : Entity(x, y, 30), speed(8), penetration(penetration), 
+Player::Player(float x, float y, int penetration, float attackSpeed) : Entity(x, y, 30), speed(400), penetration(penetration), 
 attackSpeed(attackSpeed), lastShot(0) {
 	lastShot = GetTime();
 }

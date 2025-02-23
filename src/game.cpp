@@ -13,17 +13,17 @@
 #include "collision.h"
 
 
-Game::Game() : player(Player(100, 100, 1, 0.1f)), map(Map()){
+Game::Game() : player(Player(100, 100, 1, 1.0f)), map(Map()){
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(1600, 900, "Run and Wand");
-	SetTargetFPS(60);
+	SetTargetFPS(120);
 	Image icon = LoadImage("resources/RAWicon.png");
 	SetWindowIcon(icon);
 	UnloadImage(icon);
 
 
 	Camera2D camera = { 0 };
-	camera.target = { player.x, player.y };
+	camera.target = { floor(player.x), floor(player.y) };
 	camera.offset = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
 	camera.rotation = 0.0f;
 	camera.zoom = 1.0f * ((GetScreenWidth() / 1600) * (GetScreenHeight() / 900));
@@ -55,12 +55,18 @@ void Game::Run() {
 		//Spawns enemies
 		if (enemyLoader.loadEnemies(enemyVector, player)) {
 
-			if (!levelUpMenu.draw(GetScreenWidth(), GetScreenHeight())) {
+			if (!levelUpMenu.draw(GetScreenWidth(), GetScreenHeight(), player)) {
 				return;
 			}
 
 			//Ugly hack to stop player from shooting when the game starts instantly
 			player.lastShot = (float)GetTime();
+			
+			//Logs the stats of the player
+			std::cout << "Player stats: " << std::endl;
+			std::cout << "Player attackSpeed: " << player.attackSpeed << std::endl;
+			std::cout << "Player speed: " << player.speed << std::endl;
+			std::cout << "Player penetration: " << player.penetration << std::endl;
 		}
 
 		//Zooms when the screen gets too big, so bigger res doesnt give that big of an advantage
@@ -102,7 +108,7 @@ void Game::Run() {
 		}
 
 		//Centers the camera to the player
-		camera.target = { (float)player.x, (float)player.y};
+		camera.target = { floor(player.x), floor(player.y) };
 		camera.offset = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
 
 		BeginDrawing();
@@ -136,8 +142,5 @@ void Game::Reset() {
 	projectileVector = std::vector<std::unique_ptr<Projectile>>();
 	enemyVector = std::vector<std::unique_ptr<Enemy>>();
 	player = Player(100, 100, 1, 1.0f);
-
-	//test
-	enemyVector.push_back(std::make_unique<Enemy>(Enemy(0, 400, 1)));
-	//
+	enemyLoader = EnemyLoader();
 }

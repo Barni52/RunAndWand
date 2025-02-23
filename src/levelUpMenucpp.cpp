@@ -5,7 +5,7 @@ LevelUpMenu::LevelUpMenu() {
 
 };
 
-bool LevelUpMenu::draw(int screenWidth, int screenHeight) const {
+bool LevelUpMenu::draw(int screenWidth, int screenHeight, Player& player) const {
 
     int buttonWidth = 300;
     int buttonHeight = 120;
@@ -69,13 +69,13 @@ bool LevelUpMenu::draw(int screenWidth, int screenHeight) const {
 
         // Detect button click
         if (hovered1 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-			std::cout << "Attack speed" << std::endl;
+			player.attackSpeed *= 0.9f;
             return true;
         } else if(hovered2 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-			std::cout << "Speed" << std::endl;
+            player.speed *= 1.1f;
             return true;
 		} else if (hovered3 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-			std::cout << "Penetration" << std::endl;
+            player.penetration++;
             return true;
 		}
 

@@ -10,9 +10,7 @@ public:
 
 	bool keepAlive;
 
-	int health;
-
-	Enemy(float x, float y, int health);
+	Enemy(float x, float y, float speed);
 	void draw() const;
 	void update(float deltaTime, Player& player);
 };
