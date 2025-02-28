@@ -4,11 +4,27 @@
 #include <iostream>
 
 
-Enemy::Enemy(float x, float y, float speed) : Entity(x, y, 20), keepAlive(true), speed(speed) {};
+Enemy::Enemy(float x, float y, float speed, int maxHealth) : Entity(x, y, 20), keepAlive(true), speed(speed), 
+maxHealth(maxHealth), currentHealth(maxHealth) {};
 
 void Enemy::draw() const {
-	DrawRectangle( (int)x, (int)y , (int)width, (int)width, RED);
+	// Draw enemy
+	DrawRectangle((int)x, (int)y, (int)width, (int)width, RED);
+
+	// Health bar properties
+	float healthBarWidth = width;
+	float healthBarHeight = 5;
+	float healthBarX = x;
+	float healthBarY = y - 10;
+
+	// Background bar
+	DrawRectangle((int)healthBarX, (int)healthBarY, (int)healthBarWidth, (int)healthBarHeight, DARKGRAY);
+
+	// Foreground health bar
+	float healthPercentage = (float)currentHealth / (float)maxHealth;
+	DrawRectangle((int)healthBarX, (int)healthBarY, (int)(healthBarWidth * healthPercentage), (int)healthBarHeight, GREEN);
 }
+
 
 void Enemy::update(float deltaTime, Player& player) {
 	float directionX = x - player.x;
@@ -34,6 +50,8 @@ void drawEnemies(const std::vector<std::unique_ptr<Enemy>>& projectileVector) {
 	for (int i = 0; i < projectileVector.size(); i++) {
 		projectileVector[i]->draw();
 	}
+
+
 }
 
 void updateEnemies(std::vector<std::unique_ptr<Enemy>>& enemyVector, const float deltaTime, Player& player) {

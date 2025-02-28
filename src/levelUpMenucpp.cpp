@@ -1,40 +1,42 @@
 #include "LevelUpMenu.h"
 #include <iostream>
+#include <string>
 
 LevelUpMenu::LevelUpMenu() {
 
 };
 
-bool LevelUpMenu::draw(int screenWidth, int screenHeight, Player& player) const {
-
-    int buttonWidth = 300;
-    int buttonHeight = 120;
-
-    Rectangle attackSpeedButton = {
-        screenWidth * 0.25f - buttonWidth / 2.0f,
-        screenHeight / 2.0f - buttonHeight / 2.0f,
-        (float)buttonWidth, (float)buttonHeight
-    };
-
-    Rectangle speedButton = {
-        screenWidth * 0.50f - buttonWidth / 2.0f,
-        screenHeight / 2.0f - buttonHeight / 2.0f,
-        (float)buttonWidth, (float)buttonHeight
-    };
-
-    Rectangle penetrationButton = {
-        screenWidth * 0.75f - buttonWidth / 2.0f,
-        screenHeight / 2.0f - buttonHeight / 2.0f,
-        (float)buttonWidth, (float)buttonHeight
-    };
+bool LevelUpMenu::draw(Player& player) const {
 
     while (!WindowShouldClose()) {
+
+        int buttonWidth = 300;
+        int buttonHeight = 120;
+
+        Rectangle button1 = {
+            GetScreenWidth() * 0.25f - buttonWidth / 2.0f,
+            GetScreenHeight() / 2.0f - buttonHeight / 2.0f,
+            (float)buttonWidth, (float)buttonHeight
+        };
+
+        Rectangle button2 = {
+            GetScreenWidth() * 0.50f - buttonWidth / 2.0f,
+            GetScreenHeight() / 2.0f - buttonHeight / 2.0f,
+            (float)buttonWidth, (float)buttonHeight
+        };
+
+        Rectangle button3 = {
+            GetScreenWidth() * 0.75f - buttonWidth / 2.0f,
+            GetScreenHeight() / 2.0f - buttonHeight / 2.0f,
+            (float)buttonWidth, (float)buttonHeight
+        };
+
         BeginDrawing();
 
         Vector2 mousePoint = GetMousePosition();
-        bool hovered1 = hasCollided(attackSpeedButton, mousePoint);
-        bool hovered2 = hasCollided(speedButton, mousePoint);
-        bool hovered3 = hasCollided(penetrationButton, mousePoint);
+        bool hovered1 = hasCollided(button1, mousePoint);
+        bool hovered2 = hasCollided(button2, mousePoint);
+        bool hovered3 = hasCollided(button3, mousePoint);
 
         // Draw
         BeginDrawing();
@@ -42,29 +44,30 @@ bool LevelUpMenu::draw(int screenWidth, int screenHeight, Player& player) const 
 
         // Button color changes when hovered
 
-        DrawRectangleRec(attackSpeedButton, hovered1 ? GRAY : LIGHTGRAY);
-        DrawRectangleLinesEx(attackSpeedButton, 3, BLACK);
+        DrawRectangleRec(button1, hovered1 ? GRAY : LIGHTGRAY);
+        DrawRectangleLinesEx(button1, 3, BLACK);
 
-        DrawRectangleRec(speedButton, hovered2 ? GRAY : LIGHTGRAY);
-        DrawRectangleLinesEx(speedButton, 3, BLACK);
+        DrawRectangleRec(button2, hovered2 ? GRAY : LIGHTGRAY);
+        DrawRectangleLinesEx(button2, 3, BLACK);
 
-        DrawRectangleRec(penetrationButton, hovered3 ? GRAY : LIGHTGRAY);
-        DrawRectangleLinesEx(penetrationButton, 3, BLACK);
+        DrawRectangleRec(button3, hovered3 ? GRAY : LIGHTGRAY);
+        DrawRectangleLinesEx(button3, 3, BLACK);
 
         // Button text
-        DrawText("Attack Speed",
-            (int)(attackSpeedButton.x + attackSpeedButton.width / 2 - MeasureText("Attack Speed", 30) / 2),
-            (int)(attackSpeedButton.y + attackSpeedButton.height / 2 - 30 / 2),
+		std::string s = "Attack Speed";
+        DrawText(s.c_str(),
+            (int)(button1.x + button1.width / 2 - MeasureText("Attack Speed", 30) / 2),
+            (int)(button1.y + button1.height / 2 - 30 / 2),
             30, BLACK);
 
         DrawText("Speed",
-            (int)(speedButton.x + speedButton.width / 2 - MeasureText("Speed", 30) / 2),
-            (int)(speedButton.y + speedButton.height / 2 - 30 / 2),
+            (int)(button2.x + button2.width / 2 - MeasureText("Speed", 30) / 2),
+            (int)(button2.y + button2.height / 2 - 30 / 2),
             30, BLACK);
 
         DrawText("Penetration",
-            (int)(penetrationButton.x + penetrationButton.width / 2 - MeasureText("Penetration", 30) / 2),
-            (int)(penetrationButton.y + penetrationButton.height / 2 - 30 / 2),
+            (int)(button3.x + button3.width / 2 - MeasureText("Penetration", 30) / 2),
+            (int)(button3.y + button3.height / 2 - 30 / 2),
             30, BLACK);
 
         // Detect button click

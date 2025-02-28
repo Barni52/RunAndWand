@@ -60,16 +60,21 @@ bool hasCollided(Rectangle r1, Vector2 v) {
 	}
 }
 
-void killEnemies(std::vector<std::unique_ptr<Projectile>>& projectileVector, std::vector<std::unique_ptr<Enemy>>& enemyVector) {
+void killEnemies(std::vector<std::unique_ptr<Projectile>>& projectileVector, std::vector<std::unique_ptr<Enemy>>& enemyVector, const Player& player) {
 	for (std::unique_ptr<Projectile>& pp : projectileVector) {
 		for (std::unique_ptr<Enemy>& ep: enemyVector) {
 			if (hasCollided(*pp, *ep)) {
+
 				pp->penetration--;
 				if (pp->penetration <= 0) {
 					pp->keepAlive = false;
 				}
 
-				ep->keepAlive = false;
+				ep->currentHealth -= player.damage;
+				if (ep->currentHealth <= 0) {
+					ep->keepAlive = false;
+				}
+				
 					
 				//This break is necessary, otherwise the projectile will kill all enemies it collides with
 				break;

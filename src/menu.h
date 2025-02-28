@@ -7,5 +7,5 @@
 class Menu {
 public:
 	Menu();
-	bool draw(int screenWidth, int screenHeight) const;
+	bool draw() const;
 };

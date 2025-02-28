@@ -8,5 +8,5 @@
 class LevelUpMenu {
 public:
 	LevelUpMenu();
-	bool draw(int screenWidth, int screenHeight, Player& player) const;
+	bool draw(Player& player) const;
 };

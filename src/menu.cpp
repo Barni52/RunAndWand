@@ -4,17 +4,18 @@ Menu::Menu() {
 
 };
 
-bool Menu::draw(int screenWidth, int screenHeight) const {
-
-    int buttonWidth = 200;
-    int buttonHeight = 80;
-    Rectangle startButton = {
-        screenWidth / 2.0f - buttonWidth / 2.0f,
-        screenHeight / 2.0f - buttonHeight / 2.0f,
-        (float)buttonWidth, (float)buttonHeight
-    };
+bool Menu::draw() const {
 
 	while (!WindowShouldClose()) {
+
+        int buttonWidth = 200;
+        int buttonHeight = 80;
+        Rectangle startButton = {
+            GetScreenWidth() / 2.0f - buttonWidth / 2.0f,
+            GetScreenHeight() / 2.0f - buttonHeight / 2.0f,
+            (float)buttonWidth, (float)buttonHeight
+        };
+
 		BeginDrawing();
 
             Vector2 mousePoint = GetMousePosition();

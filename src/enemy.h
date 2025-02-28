@@ -10,9 +10,13 @@ public:
 
 	bool keepAlive;
 
-	Enemy(float x, float y, float speed);
+	int maxHealth;
+	int currentHealth;
+
+	Enemy(float x, float y, float speed, int maxHealth);
 	void draw() const;
 	void update(float deltaTime, Player& player);
+
 };
 
 void drawEnemies(const std::vector<std::unique_ptr<Enemy>>& enemyVector);

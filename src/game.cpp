@@ -43,7 +43,7 @@ void Game::Run() {
 		//Draws the menu, but only once
 		if (loadMenu) {
 			loadMenu = false;
-			if (!menu.draw(GetScreenWidth(), GetScreenHeight())) {
+			if (!menu.draw()) {
 				return;
 			}
 
@@ -53,9 +53,9 @@ void Game::Run() {
 
 
 		//Spawns enemies
-		if (enemyLoader.loadEnemies(enemyVector, player)) {
+		if (enemyLoader.loadEnemies(enemyVector, player) || IsMouseButtonPressed(MOUSE_BUTTON_SIDE)) {
 
-			if (!levelUpMenu.draw(GetScreenWidth(), GetScreenHeight(), player)) {
+			if (!levelUpMenu.draw(player)) {
 				return;
 			}
 
@@ -98,9 +98,9 @@ void Game::Run() {
 
 		//Update enemies
 		updateEnemies(enemyVector, deltaTime, player);
-		killEnemies(projectileVector, enemyVector);
+		killEnemies(projectileVector, enemyVector, player);
 		if (hitPlayer(player, enemyVector)) {
-			if (!menu.draw(GetScreenWidth(), GetScreenHeight())) {
+			if (!menu.draw()) {
 				return;
 			} else {
 				Reset();
