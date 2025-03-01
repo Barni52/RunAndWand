@@ -2,7 +2,7 @@
 
 #include "projectile.h"
 #include "entity.h"
-#include  <memory>
+#include <memory>
 #include <vector>
 
 class Player : public Entity{

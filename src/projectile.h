@@ -4,6 +4,8 @@
 #include <vector>
 #include "map.h"
 #include "entity.h"
+#include <memory>
+#include <unordered_set>
 
 class Player;
 
@@ -21,6 +23,8 @@ public:
 
 	bool keepAlive;
 	int aliveTime;
+
+	std::unordered_set<int> shotEnemyIdList;
 
 	void draw() const;
 	void update(float deltaTime);

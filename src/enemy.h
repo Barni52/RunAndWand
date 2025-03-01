@@ -6,6 +6,7 @@
 
 class Enemy : public Entity{
 public:
+	 
 	float speed;
 
 	bool keepAlive;

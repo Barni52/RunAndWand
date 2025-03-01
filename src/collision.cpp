@@ -68,9 +68,16 @@ void killEnemies(std::vector<std::unique_ptr<Projectile>>& projectileVector, std
 				pp->penetration--;
 				if (pp->penetration <= 0) {
 					pp->keepAlive = false;
+					pp->shotEnemyIdList.insert(ep->id);
 				}
 
-				ep->currentHealth -= player.damage;
+
+				//If the enemy has already been shot by this projectile, skip it
+				if (!pp->shotEnemyIdList.contains(ep->id)) {
+					ep->currentHealth -= player.damage;
+					pp->shotEnemyIdList.insert(ep->id);
+				}
+	
 				if (ep->currentHealth <= 0) {
 					ep->keepAlive = false;
 				}
