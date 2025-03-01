@@ -5,6 +5,8 @@
 #include <functional>
 #include <unordered_set>
 
+#include "upgradeDefines.h"
+
 
 enum rarity {
     common,
@@ -25,12 +27,12 @@ enum upgrade {
 static std::vector<rarity> getRandomRarities() {
     std::vector<rarity> selectionPool;
 
-    for (int i = 0; i < 100; i++) selectionPool.push_back(common);
-    for (int i = 0; i < 50; i++) selectionPool.push_back(uncommon);
-    for (int i = 0; i < 30; i++) selectionPool.push_back(rare);
-    for (int i = 0; i < 15; i++) selectionPool.push_back(epic);
-    for (int i = 0; i < 5; i++) selectionPool.push_back(legendary);
-    for (int i = 0; i < 1; i++) selectionPool.push_back(mythic);
+    for (int i = 0; i < commonWeight; i++) selectionPool.push_back(common);
+    for (int i = 0; i < uncommonWeight; i++) selectionPool.push_back(uncommon);
+    for (int i = 0; i < rareWeight; i++) selectionPool.push_back(rare);
+    for (int i = 0; i < epicWeight; i++) selectionPool.push_back(epic);
+    for (int i = 0; i < legendaryWeight; i++) selectionPool.push_back(legendary);
+    for (int i = 0; i < mythicWeight; i++) selectionPool.push_back(mythic);
 
 
     std::vector<rarity> result;
@@ -46,10 +48,10 @@ static std::vector<rarity> getRandomRarities() {
 static std::vector<upgrade> getRandomUpgrades() {
     std::vector<upgrade> selectionPool;
 
-    for (int i = 0; i < 10; i++) selectionPool.push_back(attackSpeed);
-    for (int i = 0; i < 20; i++) selectionPool.push_back(speed);
-    for (int i = 0; i < 11; i++) selectionPool.push_back(penetration);
-    for (int i = 0; i < 1; i++) selectionPool.push_back(damage);
+    for (int i = 0; i < attackSpeedWeight; i++) selectionPool.push_back(attackSpeed);
+    for (int i = 0; i < speedWeight; i++) selectionPool.push_back(speed);
+    for (int i = 0; i < penetrationWeight; i++) selectionPool.push_back(penetration);
+    for (int i = 0; i < damageWeight; i++) selectionPool.push_back(damage);
 
     std::vector<upgrade> result;
     std::unordered_set<upgrade> selected;
@@ -64,6 +66,24 @@ static std::vector<upgrade> getRandomUpgrades() {
 
     return result;
 }
+
+static float getModifier(rarity rarity) {
+    switch (rarity) {
+    case common:
+        return commonModifier;
+    case uncommon:
+        return uncommonModifier;
+    case rare:
+        return rareModifier;
+    case epic:
+        return epicModifier;
+    case legendary:
+        return legendaryModifier;
+    case mythic:
+        return mythicModifier;
+    }
+    return 1.0f;
+};
 
 
 std::string getStringFromUpgrade(upgrade upgrade, rarity rarity) {
@@ -107,20 +127,66 @@ std::string getStringFromUpgrade(upgrade upgrade, rarity rarity) {
     return result;
 }
 
+static Color getColor(rarity rartiy) {
+    switch (rartiy) {
+    case common:
+        return GRAY;
+    case uncommon:
+        return GREEN;
+    case rare:
+        return BLUE;
+    case epic:
+        return PURPLE;
+    case legendary:
+        return GOLD;
+    case mythic:
+        return RED;
+    }
+	return GRAY;
+};
+
+static Color getHoverColor(rarity rarity) {
+    auto darken = [](unsigned char value, int amount) -> unsigned char {
+        return static_cast<unsigned char>(std::max(0, value - amount));
+        };
+
+    switch (rarity) {
+    case common:
+        return { darken(GRAY.r, 30), darken(GRAY.g, 30), darken(GRAY.b, 30), GRAY.a };
+    case uncommon:
+        return { darken(GREEN.r, 40), darken(GREEN.g, 40), darken(GREEN.b, 40), GREEN.a };
+    case rare:
+        return { darken(BLUE.r, 40), darken(BLUE.g, 40), darken(BLUE.b, 40), BLUE.a };
+    case epic:
+        return { darken(PURPLE.r, 40), darken(PURPLE.g, 40), darken(PURPLE.b, 40), PURPLE.a };
+    case legendary:
+        return { darken(GOLD.r, 40), darken(GOLD.g, 40), darken(GOLD.b, 40), GOLD.a };
+    case mythic:
+        return { darken(RED.r, 40), darken(RED.g, 40), darken(RED.b, 40), RED.a };
+    }
+    return GRAY;
+}
+
 static void upgradeAttackSpeed(Player& player, float modifier) {
-	player.attackSpeed *= 0.9f;
+	player.attackSpeed *= (0.95f / modifier);
 }
 
 static void upgradeSpeed(Player& player, float modifier) {
-	player.speed *= 1.1f;
+	player.speed *= (1.03f * modifier);
 }
 
 static void upgradePenetration(Player& player, float modifier) {
-	player.penetration++;
+    if (modifier == commonModifier || modifier == uncommonModifier) {
+		player.penetration += 1;
+	} else if(modifier == rareModifier || modifier == epicModifier) {
+		player.penetration += 2;
+	} else if(modifier == legendaryModifier || modifier == mythicModifier) {
+		player.penetration += 3;
+	}
 }
 
 static void upgradeDamage(Player& player, float modifier) {
-	player.damage++;
+	player.damage += (1 * modifier);
 }
 
 
@@ -162,6 +228,18 @@ bool LevelUpMenu::draw(Player& player) const {
     std::string s2 = getStringFromUpgrade(upgrades[1], rarities[1]);
     std::string s3 = getStringFromUpgrade(upgrades[2], rarities[2]);
 
+	Color color1 = getColor(rarities[0]);
+	Color color2 = getColor(rarities[1]);
+	Color color3 = getColor(rarities[2]);
+
+	Color hoveredColor1 = getHoverColor(rarities[0]);
+	Color hoveredColor2 = getHoverColor(rarities[1]);
+	Color hoveredColor3 = getHoverColor(rarities[2]);
+
+	float modifier1 = getModifier(rarities[0]);
+	float modifier2 = getModifier(rarities[1]);
+	float modifier3 = getModifier(rarities[2]);
+
     while (!WindowShouldClose()) {
 
         int buttonWidth = 400;
@@ -196,13 +274,13 @@ bool LevelUpMenu::draw(Player& player) const {
 
             // Button color changes when hovered
 
-            DrawRectangleRec(button1, hovered1 ? GRAY : LIGHTGRAY);
+            DrawRectangleRec(button1, hovered1 ? hoveredColor1 : color1);
             DrawRectangleLinesEx(button1, 3, BLACK);
 
-            DrawRectangleRec(button2, hovered2 ? GRAY : LIGHTGRAY);
+            DrawRectangleRec(button2, hovered2 ? hoveredColor2 : color2);
             DrawRectangleLinesEx(button2, 3, BLACK);
 
-            DrawRectangleRec(button3, hovered3 ? GRAY : LIGHTGRAY);
+            DrawRectangleRec(button3, hovered3 ? hoveredColor3 : color3);
             DrawRectangleLinesEx(button3, 3, BLACK);
 
             // Button text
@@ -225,15 +303,15 @@ bool LevelUpMenu::draw(Player& player) const {
 
         // Detect button click
         if (hovered1 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-			upgradeFunc1(player, 1.0f);
+			upgradeFunc1(player, modifier1);
             return true;
         }
         else if (hovered2 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            upgradeFunc2(player, 1.0f);
+            upgradeFunc2(player, modifier2);
             return true;
         }
         else if (hovered3 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            upgradeFunc3(player, 1.0f);
+            upgradeFunc3(player, modifier3);
             return true;
         }
     };
