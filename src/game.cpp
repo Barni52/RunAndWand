@@ -35,9 +35,12 @@ Game::Game() : player(Player(100, 100, 1, 1.0f)), map(Map()){
 	menu = Menu();
 	loadMenu = true;
 
+
 }
 
 void Game::Run() { 
+	bool stop = false;
+
 	while (!WindowShouldClose()) {
 
 		//Draws the menu, but only once
@@ -67,6 +70,7 @@ void Game::Run() {
 			std::cout << "Player attackSpeed: " << player.attackSpeed << std::endl;
 			std::cout << "Player speed: " << player.speed << std::endl;
 			std::cout << "Player penetration: " << player.penetration << std::endl;
+			std::cout << "Player damage: " << player.damage << std::endl;
 		}
 
 		//Zooms when the screen gets too big, so bigger res doesnt give that big of an advantage
@@ -97,15 +101,26 @@ void Game::Run() {
 		updateProjectiles(projectileVector, deltaTime);
 
 		//Update enemies
-		updateEnemies(enemyVector, deltaTime, player);
-		killEnemies(projectileVector, enemyVector, player);
-		if (hitPlayer(player, enemyVector)) {
-			if (!menu.draw()) {
-				return;
-			} else {
-				Reset();
+		//Also stops enemies if p is pressed (debug)
+		if (IsKeyPressed(KEY_P)) {
+			stop = !stop;
+			std::cout << "Enemies stopped: " << stop << std::endl;
+		}
+
+		if (!stop) {
+			updateEnemies(enemyVector, deltaTime, player);
+			killEnemies(projectileVector, enemyVector, player);
+			if (hitPlayer(player, enemyVector)) {
+				if (!menu.draw()) {
+					return;
+				}
+				else {
+					Reset();
+				}
 			}
 		}
+
+		
 
 		//Centers the camera to the player
 		camera.target = { floor(player.x), floor(player.y) };

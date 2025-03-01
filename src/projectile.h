@@ -24,7 +24,7 @@ public:
 	bool keepAlive;
 	int aliveTime;
 
-	std::unordered_set<int> shotEnemyIdList;
+	std::unordered_set<int> shotEnemyIdSet;
 
 	void draw() const;
 	void update(float deltaTime);

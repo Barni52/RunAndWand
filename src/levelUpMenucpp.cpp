@@ -2,24 +2,142 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <functional>
+#include <unordered_set>
 
-static std::string getRandomUpgrade() {
-    int numberOfUpgrades = 4;
 
-    int r = (rand() % numberOfUpgrades) + 1;
+enum rarity {
+    common,
+	uncommon,
+    rare,
+    epic,
+    legendary,
+	mythic
+};
 
-    switch (r) {
+enum upgrade {
+    attackSpeed,
+    speed,
+    penetration,
+    damage
+};
 
-    case 1:
-        return "Attack Speed";
-    case 2:
-        return "Speed";
-    case 3:
-        return "Penetration";
-    case 4:
-        return "Damage";
-    default:
-        throw std::invalid_argument("Invalid number (this happened at the rng)");
+static std::vector<rarity> getRandomRarities() {
+    std::vector<rarity> selectionPool;
+
+    for (int i = 0; i < 100; i++) selectionPool.push_back(common);
+    for (int i = 0; i < 50; i++) selectionPool.push_back(uncommon);
+    for (int i = 0; i < 30; i++) selectionPool.push_back(rare);
+    for (int i = 0; i < 15; i++) selectionPool.push_back(epic);
+    for (int i = 0; i < 5; i++) selectionPool.push_back(legendary);
+    for (int i = 0; i < 1; i++) selectionPool.push_back(mythic);
+
+
+    std::vector<rarity> result;
+    for (int i = 0; i < 3; i++) {
+        int index = std::rand() % selectionPool.size();
+        result.push_back(selectionPool[index]);
+    }
+
+    return result;
+}
+
+
+static std::vector<upgrade> getRandomUpgrades() {
+    std::vector<upgrade> selectionPool;
+
+    for (int i = 0; i < 10; i++) selectionPool.push_back(attackSpeed);
+    for (int i = 0; i < 20; i++) selectionPool.push_back(speed);
+    for (int i = 0; i < 11; i++) selectionPool.push_back(penetration);
+    for (int i = 0; i < 1; i++) selectionPool.push_back(damage);
+
+    std::vector<upgrade> result;
+    std::unordered_set<upgrade> selected;
+
+    while (result.size() < 3) {
+        int index = std::rand() % selectionPool.size();
+
+        if (selected.insert(selectionPool[index]).second) {
+            result.push_back(selectionPool[index]);
+        }
+    }
+
+    return result;
+}
+
+
+std::string getStringFromUpgrade(upgrade upgrade, rarity rarity) {
+	std::string result = "";
+
+	switch (upgrade) {
+	case attackSpeed:
+		result = "Attack speed";
+		break;
+	case speed:
+		result = "Speed";
+		break;
+	case penetration:
+		result = "Penetration";
+		break;
+	case damage:
+		result = "Damage";
+		break;
+	}
+
+    switch (rarity) {
+	case common:
+		result += " (Common)";
+		break;
+    case uncommon:
+		result += " (Uncommon)";
+		break;
+	case rare:
+		result += " (Rare)";
+		break;
+	case epic:
+		result += " (Epic)";
+		break;
+	case legendary:
+		result += " (Legendary)";
+		break;
+	case mythic:
+		result += " (Mythic)";
+		break;
+    }
+    return result;
+}
+
+static void upgradeAttackSpeed(Player& player, float modifier) {
+	player.attackSpeed *= 0.9f;
+}
+
+static void upgradeSpeed(Player& player, float modifier) {
+	player.speed *= 1.1f;
+}
+
+static void upgradePenetration(Player& player, float modifier) {
+	player.penetration++;
+}
+
+static void upgradeDamage(Player& player, float modifier) {
+	player.damage++;
+}
+
+
+void attachUpgrade(std::function<void(Player& player, float modifier)>& upgradeFunc, upgrade upgrade) {
+    switch (upgrade) {
+    case attackSpeed:
+        upgradeFunc = upgradeAttackSpeed;
+        break;
+    case speed:
+        upgradeFunc = upgradeSpeed;
+        break;
+    case penetration:
+        upgradeFunc = upgradePenetration;
+        break;
+    case damage:
+        upgradeFunc = upgradeDamage;
+        break;
     }
 }
 
@@ -29,14 +147,25 @@ LevelUpMenu::LevelUpMenu() {
 
 bool LevelUpMenu::draw(Player& player) const {
 
-    std::string s1 = getRandomUpgrade();
-    std::string s2 = getRandomUpgrade();
-    std::string s3 = getRandomUpgrade();
+    std::function<void(Player& player, float modifier)> upgradeFunc1;
+    std::function<void(Player& player, float modifier)> upgradeFunc2;
+    std::function<void(Player& player, float modifier)> upgradeFunc3;
+
+    std::vector<rarity> rarities = getRandomRarities();
+    std::vector<upgrade> upgrades = getRandomUpgrades();
+
+	attachUpgrade(upgradeFunc1, upgrades[0]);
+	attachUpgrade(upgradeFunc2, upgrades[1]);
+	attachUpgrade(upgradeFunc3, upgrades[2]);
+
+    std::string s1 = getStringFromUpgrade(upgrades[0], rarities[0]);
+    std::string s2 = getStringFromUpgrade(upgrades[1], rarities[1]);
+    std::string s3 = getStringFromUpgrade(upgrades[2], rarities[2]);
 
     while (!WindowShouldClose()) {
 
-        int buttonWidth = 300;
-        int buttonHeight = 120;
+        int buttonWidth = 400;
+        int buttonHeight = 160;
 
         Rectangle button1 = {
             GetScreenWidth() * 0.25f - buttonWidth / 2.0f,
@@ -96,15 +225,15 @@ bool LevelUpMenu::draw(Player& player) const {
 
         // Detect button click
         if (hovered1 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            player.attackSpeed *= 0.9f;
+			upgradeFunc1(player, 1.0f);
             return true;
         }
         else if (hovered2 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            player.speed *= 1.1f;
+            upgradeFunc2(player, 1.0f);
             return true;
         }
         else if (hovered3 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            player.penetration++;
+            upgradeFunc3(player, 1.0f);
             return true;
         }
     };

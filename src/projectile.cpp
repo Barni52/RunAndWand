@@ -18,7 +18,7 @@ Projectile::Projectile(Player player, float directionX, float directionY, int pe
 		keepAlive = false; // this ensures that if the normalized vector is zero (aka the vector doesnt have a direction to go), that it gets deleted
 	}
 
-	shotEnemyIdList = std::unordered_set<int>();
+	shotEnemyIdSet = std::unordered_set<int>();
 };
 
 void Projectile::draw() const{
