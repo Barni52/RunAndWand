@@ -14,7 +14,9 @@ public:
 	int maxHealth;
 	int currentHealth;
 
-	Enemy(float x, float y, float speed, int maxHealth);
+	double experience;
+
+	Enemy(float x, float y, float speed, int maxHealth, double experience);
 	void draw() const;
 	void update(float deltaTime, Player& player);
 

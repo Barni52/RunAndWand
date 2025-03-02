@@ -11,15 +11,16 @@ class EnemyLoader {
 public:
 	int currentLevel;
 	int maxEnemies;
-	int numberOfEnemiesLeft;
+	int numberOfEnemiesLeftToSpawn;
 	float lastTimeEnemySpawned;
 	float enemySpawnRate;
 	float enemySpeedRate;
+	double experienceFromEnemies;
 
 	EnemyLoader();
-	bool loadEnemies(std::vector<std::unique_ptr<Enemy>>& enemyVector, const Player& player);
+	void loadEnemies(std::vector<std::unique_ptr<Enemy>>& enemyVector, const Player& player);
 
 private:
 	void spawnEnemy(std::vector<std::unique_ptr<Enemy>>& enemyVector, const Player& player);
-	void levelUp();
+	void spawnNextLevel();
 };

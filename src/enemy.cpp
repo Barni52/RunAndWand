@@ -4,8 +4,8 @@
 #include <iostream>
 
 
-Enemy::Enemy(float x, float y, float speed, int maxHealth) : Entity(x, y, 20), keepAlive(true), speed(speed), 
-maxHealth(maxHealth), currentHealth(maxHealth) {};
+Enemy::Enemy(float x, float y, float speed, int maxHealth, double experience) : Entity(x, y, 20), keepAlive(true), speed(speed), 
+maxHealth(maxHealth), currentHealth(maxHealth), experience(experience) {};
 
 void Enemy::draw() const {
 	// Draw enemy

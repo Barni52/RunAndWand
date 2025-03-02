@@ -1,21 +1,18 @@
 #define _USE_MATH_DEFINES
 #include "enemyLoader.h"
 
-EnemyLoader::EnemyLoader() : currentLevel(1), maxEnemies(6), numberOfEnemiesLeft(6), lastTimeEnemySpawned((float)GetTime()), enemySpawnRate(1.0f), enemySpeedRate(300) {}
+EnemyLoader::EnemyLoader() : currentLevel(1), maxEnemies(6), numberOfEnemiesLeftToSpawn(6), lastTimeEnemySpawned((float)GetTime()), enemySpawnRate(1.0f),
+enemySpeedRate(180), experienceFromEnemies(2) {}
 
-bool EnemyLoader::loadEnemies(std::vector<std::unique_ptr<Enemy>>& enemyVector, const Player& player) {
-	if ((float)GetTime() - lastTimeEnemySpawned >= 1 && numberOfEnemiesLeft > 0) {
+void EnemyLoader::loadEnemies(std::vector<std::unique_ptr<Enemy>>& enemyVector, const Player& player) {
+	if ((float)GetTime() - lastTimeEnemySpawned >= enemySpawnRate && numberOfEnemiesLeftToSpawn > 0) {
 		lastTimeEnemySpawned = (float)GetTime();
 		spawnEnemy(enemyVector, player);
-		numberOfEnemiesLeft--;
+		numberOfEnemiesLeftToSpawn--;
 	}
-	if (numberOfEnemiesLeft <= 0 && enemyVector.empty()){
-		levelUp();
-
-		//Indicates that the player has killed all enemies, and the level up menu is shown
-		return true;
+	if (numberOfEnemiesLeftToSpawn <= 0){
+		spawnNextLevel();
 	}
-	return false;
 }
 
 void EnemyLoader::spawnEnemy(std::vector<std::unique_ptr<Enemy>>& enemyVector, const Player& player) {
@@ -25,18 +22,19 @@ void EnemyLoader::spawnEnemy(std::vector<std::unique_ptr<Enemy>>& enemyVector, c
 	float spawnX = player.x + spawnRadius * cos(angle);
 	float spawnY = player.y + spawnRadius * sin(angle);
 
-	enemyVector.push_back(std::make_unique<Enemy>(spawnX, spawnY, enemySpeedRate, 2));
+	enemyVector.push_back(std::make_unique<Enemy>(spawnX, spawnY, enemySpeedRate, 2 , 10));
 }
 
-void EnemyLoader::levelUp() {
+void EnemyLoader::spawnNextLevel() {
 	currentLevel++;
 	enemySpawnRate *= 0.80f;
-	enemySpeedRate *= 1.05f;
+	enemySpeedRate *= 1.03f;
+	experienceFromEnemies *= 1.05;
 	if (maxEnemies < 10) {
 		maxEnemies += 2;
 	}
 	else {
 		maxEnemies = (int)(1.10 * maxEnemies);
 	}
-	numberOfEnemiesLeft = maxEnemies;
+	numberOfEnemiesLeftToSpawn = maxEnemies;
 }

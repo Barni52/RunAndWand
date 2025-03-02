@@ -12,5 +12,5 @@ bool hasCollided(const Entity& e1, int x, int y);
 bool hasCollided(Rectangle r1, Rectangle r2);
 bool hasCollided(Rectangle r1, Vector2);
 
-void killEnemies(std::vector<std::unique_ptr<Projectile>>& projectileVector, std::vector<std::unique_ptr<Enemy>>& enemyVector, const Player& player);
+void killEnemies(std::vector<std::unique_ptr<Projectile>>& projectileVector, std::vector<std::unique_ptr<Enemy>>& enemyVector, Player& player);
 bool hitPlayer(Player& player, std::vector<std::unique_ptr<Enemy>>& enemyVector);

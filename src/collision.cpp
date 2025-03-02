@@ -60,7 +60,7 @@ bool hasCollided(Rectangle r1, Vector2 v) {
 	}
 }
 
-void killEnemies(std::vector<std::unique_ptr<Projectile>>& projectileVector, std::vector<std::unique_ptr<Enemy>>& enemyVector, const Player& player) {
+void killEnemies(std::vector<std::unique_ptr<Projectile>>& projectileVector, std::vector<std::unique_ptr<Enemy>>& enemyVector, Player& player) {
 	for (std::unique_ptr<Projectile>& pp : projectileVector) {
 		for (std::unique_ptr<Enemy>& ep: enemyVector) {
 			if (hasCollided(*pp, *ep)) {
@@ -79,6 +79,7 @@ void killEnemies(std::vector<std::unique_ptr<Projectile>>& projectileVector, std
 	
 				if (ep->currentHealth <= 0) {
 					ep->keepAlive = false;
+					player.currentExperience += ep->experience;
 				}
 				
 					

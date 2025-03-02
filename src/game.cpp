@@ -56,7 +56,10 @@ void Game::Run() {
 
 
 		//Spawns enemies
-		if (enemyLoader.loadEnemies(enemyVector, player) || IsMouseButtonPressed(MOUSE_BUTTON_SIDE)) {
+		enemyLoader.loadEnemies(enemyVector, player);
+		if (player.currentExperience > player.experienceToNextLevel || IsMouseButtonPressed(MOUSE_BUTTON_SIDE)) {
+			player.currentExperience = player.currentExperience - player.experienceToNextLevel;
+			player.experienceToNextLevel = player.experienceToNextLevel * 1.25;
 
 			if (!levelUpMenu.draw(player)) {
 				return;
@@ -76,9 +79,7 @@ void Game::Run() {
 		//Zooms when the screen gets too big, so bigger res doesnt give that big of an advantage
 		if (GetScreenWidth() > 1800 || GetScreenHeight() > 1200) {
 			camera.zoom = 1.5f;
-		}
-
-		else {
+		} else {
 			camera.zoom = 1.0f;
 		}
 
