@@ -57,6 +57,9 @@
     <ClCompile Include="src\enemyLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\scoreSave.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\collision.h">
@@ -101,5 +104,11 @@
     <ClInclude Include="src\upgradeDefines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\scoreSave.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="save\save.txt" />
   </ItemGroup>
 </Project>

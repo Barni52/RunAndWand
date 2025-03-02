@@ -151,6 +151,7 @@
     <ClCompile Include="src\middleFinder.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\projectile.cpp" />
+    <ClCompile Include="src\scoreSave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\button.h" />
@@ -166,7 +167,11 @@
     <ClInclude Include="src\middleFinder.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\projectile.h" />
+    <ClInclude Include="src\scoreSave.h" />
     <ClInclude Include="src\upgradeDefines.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="save\save.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

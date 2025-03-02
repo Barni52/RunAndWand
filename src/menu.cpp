@@ -4,7 +4,7 @@ Menu::Menu() {
 
 };
 
-bool Menu::draw() const {
+bool Menu::draw(int highscore) const {
 
 	while (!WindowShouldClose()) {
 
@@ -17,12 +17,11 @@ bool Menu::draw() const {
         };
 
 		BeginDrawing();
+        Vector2 mousePoint = GetMousePosition();
+        bool hovered = hasCollided(startButton, mousePoint);
 
-            Vector2 mousePoint = GetMousePosition();
-            bool hovered = hasCollided(startButton, mousePoint);
-
-            // Draw
-            BeginDrawing();
+        // Draw
+        BeginDrawing();
             ClearBackground(DARKGRAY);
 
             // Button color changes when hovered
@@ -32,6 +31,10 @@ bool Menu::draw() const {
 
             // Button text
             DrawText("START", (int)(startButton.x + buttonWidth / 4), (int)(startButton.y + buttonHeight / 4), 30, BLACK);
+
+            //High Score text
+			std::string s = "High Score: " + std::to_string(highscore);
+			DrawText(s.c_str(), (int)(startButton.x + buttonWidth / 4), (int)(startButton.y + buttonHeight / 4) - 200, 30, BLACK);
 
             // Detect button click
             if (hovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {

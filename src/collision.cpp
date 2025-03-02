@@ -80,6 +80,7 @@ void killEnemies(std::vector<std::unique_ptr<Projectile>>& projectileVector, std
 				if (ep->currentHealth <= 0) {
 					ep->keepAlive = false;
 					player.currentExperience += ep->experience;
+					player.score += ep->experience;
 				}
 				
 					

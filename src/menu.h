@@ -3,9 +3,10 @@
 #include "raylib.h"
 #include "button.h"
 #include "collision.h"
+#include <string>
 
 class Menu {
 public:
 	Menu();
-	bool draw() const;
+	bool draw(int highscore) const;
 };

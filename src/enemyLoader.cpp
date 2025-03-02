@@ -22,7 +22,7 @@ void EnemyLoader::spawnEnemy(std::vector<std::unique_ptr<Enemy>>& enemyVector, c
 	float spawnX = player.x + spawnRadius * cos(angle);
 	float spawnY = player.y + spawnRadius * sin(angle);
 
-	enemyVector.push_back(std::make_unique<Enemy>(spawnX, spawnY, enemySpeedRate, 2 , 10));
+	enemyVector.push_back(std::make_unique<Enemy>(spawnX, spawnY, enemySpeedRate, 2 , experienceFromEnemies));
 }
 
 void EnemyLoader::spawnNextLevel() {

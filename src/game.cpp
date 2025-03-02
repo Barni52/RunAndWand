@@ -34,7 +34,7 @@ Game::Game() : player(Player(100, 100, 1, 1.0f)), map(Map()){
 	enemyLoader = EnemyLoader();
 	menu = Menu();
 	loadMenu = true;
-
+	scoreSaver = ScoreSaver();
 
 }
 
@@ -46,7 +46,7 @@ void Game::Run() {
 		//Draws the menu, but only once
 		if (loadMenu) {
 			loadMenu = false;
-			if (!menu.draw()) {
+			if (!menu.draw(scoreSaver.highScore)) {
 				return;
 			}
 
@@ -112,7 +112,8 @@ void Game::Run() {
 			updateEnemies(enemyVector, deltaTime, player);
 			killEnemies(projectileVector, enemyVector, player);
 			if (hitPlayer(player, enemyVector)) {
-				if (!menu.draw()) {
+				scoreSaver.saveHighScore(player.score);
+				if (!menu.draw(scoreSaver.highScore)) {
 					return;
 				}
 				else {

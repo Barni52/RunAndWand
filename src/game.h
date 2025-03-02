@@ -6,6 +6,7 @@
 #include "menu.h"
 #include "levelUpMenu.h"
 #include "enemyLoader.h"
+#include "scoreSave.h"
 
 class Game{
 public:
@@ -22,6 +23,7 @@ public:
 	Menu menu;
 	LevelUpMenu levelUpMenu;
 	EnemyLoader enemyLoader;
+	ScoreSaver scoreSaver;
 	bool loadMenu;
 
 	void Reset();
