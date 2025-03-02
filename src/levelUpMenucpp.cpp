@@ -27,12 +27,12 @@ enum upgrade {
 static std::vector<rarity> getRandomRarities() {
     std::vector<rarity> selectionPool;
 
-    for (int i = 0; i < commonWeight; i++) selectionPool.push_back(common);
-    for (int i = 0; i < uncommonWeight; i++) selectionPool.push_back(uncommon);
-    for (int i = 0; i < rareWeight; i++) selectionPool.push_back(rare);
-    for (int i = 0; i < epicWeight; i++) selectionPool.push_back(epic);
-    for (int i = 0; i < legendaryWeight; i++) selectionPool.push_back(legendary);
-    for (int i = 0; i < mythicWeight; i++) selectionPool.push_back(mythic);
+    for (int i = 0; i < COMMON_WEIGHT; i++) selectionPool.push_back(common);
+    for (int i = 0; i < UNCOMMON_WEIGHT; i++) selectionPool.push_back(uncommon);
+    for (int i = 0; i < RARE_WEIGHT; i++) selectionPool.push_back(rare);
+    for (int i = 0; i < EPIC_WEIGHT; i++) selectionPool.push_back(epic);
+    for (int i = 0; i < LEGENDARY_WEIGHT; i++) selectionPool.push_back(legendary);
+    for (int i = 0; i < MYTHIC_WEIGHT; i++) selectionPool.push_back(mythic);
 
 
     std::vector<rarity> result;
@@ -48,10 +48,10 @@ static std::vector<rarity> getRandomRarities() {
 static std::vector<upgrade> getRandomUpgrades() {
     std::vector<upgrade> selectionPool;
 
-    for (int i = 0; i < attackSpeedWeight; i++) selectionPool.push_back(attackSpeed);
-    for (int i = 0; i < speedWeight; i++) selectionPool.push_back(speed);
-    for (int i = 0; i < penetrationWeight; i++) selectionPool.push_back(penetration);
-    for (int i = 0; i < damageWeight; i++) selectionPool.push_back(damage);
+    for (int i = 0; i < ATTACK_SPEED_WEIGHT; i++) selectionPool.push_back(attackSpeed);
+    for (int i = 0; i < SPEED_WEIGHT; i++) selectionPool.push_back(speed);
+    for (int i = 0; i < PENETRATION_WEIGHT; i++) selectionPool.push_back(penetration);
+    for (int i = 0; i < DAMAGE_WEIGHT; i++) selectionPool.push_back(damage);
 
     std::vector<upgrade> result;
     std::unordered_set<upgrade> selected;
@@ -70,17 +70,17 @@ static std::vector<upgrade> getRandomUpgrades() {
 static float getModifier(rarity rarity) {
     switch (rarity) {
     case common:
-        return commonModifier;
+        return COMMON_MODIFIER;
     case uncommon:
-        return uncommonModifier;
+        return UNCOMMON_MODIFIER;
     case rare:
-        return rareModifier;
+        return RARE_MODIFIER;
     case epic:
-        return epicModifier;
+        return EPIC_MODIFIER;
     case legendary:
-        return legendaryModifier;
+        return LEGENDARY_MODIFIER;
     case mythic:
-        return mythicModifier;
+        return MYTHIC_MODIFIER;
     }
     return 1.0f;
 };
@@ -176,11 +176,11 @@ static void upgradeSpeed(Player& player, float modifier) {
 }
 
 static void upgradePenetration(Player& player, float modifier) {
-    if (modifier == commonModifier || modifier == uncommonModifier) {
+    if (modifier == COMMON_MODIFIER || modifier == UNCOMMON_MODIFIER) {
 		player.penetration += 1;
-	} else if(modifier == rareModifier || modifier == epicModifier) {
+	} else if(modifier == RARE_MODIFIER || modifier == EPIC_MODIFIER) {
 		player.penetration += 2;
-	} else if(modifier == legendaryModifier || modifier == mythicModifier) {
+	} else if(modifier == LEGENDARY_MODIFIER || modifier == MYTHIC_MODIFIER) {
 		player.penetration += 3;
 	}
 }

@@ -1,21 +1,21 @@
 #pragma once
 
 
-#define commonWeight 100
-#define uncommonWeight 50
-#define rareWeight 30
-#define epicWeight 15
-#define legendaryWeight 5
-#define mythicWeight 1
+#define COMMON_WEIGHT 100
+#define UNCOMMON_WEIGHT 50
+#define RARE_WEIGHT 30
+#define EPIC_WEIGHT 15
+#define LEGENDARY_WEIGHT 5
+#define MYTHIC_WEIGHT 1
 
-#define attackSpeedWeight 10
-#define speedWeight 10
-#define penetrationWeight 10
-#define damageWeight 10
+#define ATTACK_SPEED_WEIGHT 10
+#define SPEED_WEIGHT 10
+#define PENETRATION_WEIGHT 10
+#define DAMAGE_WEIGHT 10
 
-#define commonModifier 1.0f
-#define uncommonModifier 1.05f
-#define rareModifier 1.1f
-#define epicModifier 1.2f
-#define legendaryModifier 1.25f
-#define mythicModifier 1.5f
+#define COMMON_MODIFIER 1.0f
+#define UNCOMMON_MODIFIER 1.05f
+#define RARE_MODIFIER 1.1f
+#define EPIC_MODIFIER 1.2f
+#define LEGENDARY_MODIFIER 1.25f
+#define MYTHIC_MODIFIER 1.5f
