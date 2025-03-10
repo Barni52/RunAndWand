@@ -3,20 +3,23 @@
 #include <vector>
 #include "player.h"
 #include "entity.h"
+#include "textureLoader.h"
 
 class Enemy : public Entity{
 public:
-	 
+	
 	float speed;
 
 	bool keepAlive;
 
-	int maxHealth;
-	int currentHealth;
+	float maxHealth;
+	float currentHealth;
 
 	double experience;
 
-	Enemy(float x, float y, float speed, int maxHealth, double experience);
+	Texture2D texture;
+
+	Enemy(float x, float y, float speed, float maxHealth, double experience, Texture2D texture);
 	void draw() const;
 	void update(float deltaTime, Player& player);
 

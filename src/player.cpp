@@ -2,14 +2,14 @@
 
 Player::Player(float x, float y, int penetration, float attackSpeed) : Entity(x, y, 30), speed(250), penetration(penetration), 
 attackSpeed(attackSpeed), lastShot(0), damage(1), level(1), currentExperience(0), experienceToNextLevel(10), score(0) {
-	lastShot = GetTime();
+	lastShot = (float)GetTime();
 }
 
 void Player::shoot(const int mousePosX, const int mousePosY, std::vector<std::unique_ptr<Projectile>>& projectileVector) {
 	if (GetTime() - lastShot >= attackSpeed) {
 		Projectile projectile(*this, (float)mousePosX, (float)mousePosY, penetration);
 		projectileVector.push_back(std::make_unique<Projectile>(projectile));
-		lastShot = GetTime();
+		lastShot = (float)GetTime();
 	}
 }
 

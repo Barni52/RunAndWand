@@ -152,6 +152,7 @@
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\projectile.cpp" />
     <ClCompile Include="src\scoreSave.cpp" />
+    <ClCompile Include="src\textureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\button.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\projectile.h" />
     <ClInclude Include="src\scoreSave.h" />
+    <ClInclude Include="src\textureLoader.h" />
     <ClInclude Include="src\upgradeDefines.h" />
   </ItemGroup>
   <ItemGroup>

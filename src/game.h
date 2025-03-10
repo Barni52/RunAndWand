@@ -1,4 +1,5 @@
 #pragma once
+#define RAYLIB_STATIC
 #include <memory>
 #include "projectile.h"
 #include "enemy.h"
@@ -7,6 +8,20 @@
 #include "levelUpMenu.h"
 #include "enemyLoader.h"
 #include "scoreSave.h"
+#include "input.h"
+#include <iostream>
+#include "projectile.h"
+#include <vector>
+#include "middleFinder.h"
+#include <memory>
+#include "enemy.h"
+#include "collision.h"
+#include "textureLoader.h"
+#include "raylib.h"
+#include "game.h"
+#include "map.h"
+#include "player.h"
+
 
 class Game{
 public:
@@ -25,6 +40,7 @@ public:
 	EnemyLoader enemyLoader;
 	ScoreSaver scoreSaver;
 	bool loadMenu;
+	TextureLoader textureLoader;
 
 	void Reset();
 

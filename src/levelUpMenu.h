@@ -6,9 +6,6 @@
 #include "player.h"
 
 class LevelUpMenu {
-private:
-	int halfUpgrades = 0;
-
 public:
 	LevelUpMenu();
 	bool draw(Player& player) const;

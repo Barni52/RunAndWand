@@ -34,7 +34,8 @@ bool Menu::draw(int highscore) const {
 
             //High Score text
 			std::string s = "High Score: " + std::to_string(highscore);
-			DrawText(s.c_str(), (int)(startButton.x + buttonWidth / 4), (int)(startButton.y + buttonHeight / 4) - 200, 30, BLACK);
+			int textWidth = MeasureText(s.c_str(), 30);
+            DrawText(s.c_str(), (GetScreenWidth() - textWidth) / 2, 10, 30, RAYWHITE);
 
             // Detect button click
             if (hovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {

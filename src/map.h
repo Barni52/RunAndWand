@@ -2,7 +2,7 @@
 #define TILE_SIZE 10 //Defines the size of a tile in pixels
 #define CHUNK_SIZE 16 // Defines the chunk size in tiles
 #define WORLD_SIZE 1024 // Defines the world size in tiles
-#define LOADED_CHUNKS 7 // Defines how many chunks will be loaded in each direction (number of chunks loaded = (LOADED_CHUNKS*2)^2)
+#define LOADED_CHUNKS 10 // Defines how many chunks will be loaded in each direction (number of chunks loaded = (LOADED_CHUNKS*2)^2)
 #define CHUNK_NUMBER WORLD_SIZE / CHUNK_SIZE
 #include <memory>
 #include <array>

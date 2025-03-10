@@ -1,26 +1,20 @@
-#define RAYLIB_STATIC
-#include "raylib.h"
-#include "game.h"
-#include "map.h"
-#include "player.h"
-#include "input.h"
-#include <iostream>
-#include "projectile.h"
-#include <vector>
-#include "middleFinder.h"
-#include <memory>
-#include "enemy.h"
-#include "collision.h"
+﻿#include "game.h"
 
+Game::Game()
+	: player(Player(100, 100, 1, 1.0f)),
+	map(Map()),
+	textureLoader(TextureLoader()),
+	enemyLoader(),
+	levelUpMenu(LevelUpMenu()),
+	menu(Menu()),
+	scoreSaver(ScoreSaver()),
+	loadMenu(true),
+	projectileVector(std::vector<std::unique_ptr<Projectile>>()),
+	enemyVector(std::vector<std::unique_ptr<Enemy>>()) {
 
-Game::Game() : player(Player(100, 100, 1, 1.0f)), map(Map()){
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(1600, 900, "Run and Wand");
 	SetTargetFPS(120);
-	Image icon = LoadImage("resources/RAWicon.png");
-	SetWindowIcon(icon);
-	UnloadImage(icon);
-
 
 	Camera2D camera = { 0 };
 	camera.target = { floor(player.x), floor(player.y) };
@@ -28,20 +22,17 @@ Game::Game() : player(Player(100, 100, 1, 1.0f)), map(Map()){
 	camera.rotation = 0.0f;
 	camera.zoom = 1.0f * ((GetScreenWidth() / 1600) * (GetScreenHeight() / 900));
 
-	projectileVector = std::vector<std::unique_ptr<Projectile>>();
-	enemyVector = std::vector<std::unique_ptr<Enemy>>();
-	levelUpMenu = LevelUpMenu();
-	enemyLoader = EnemyLoader();
-	menu = Menu();
-	loadMenu = true;
-	scoreSaver = ScoreSaver();
+	textureLoader.loadTextures();
+	enemyLoader.setTextureLoader(textureLoader);
+	
 
 }
 
 void Game::Run() { 
 	bool stop = false;
-
+	
 	while (!WindowShouldClose()) {
+		float deltaTime = GetFrameTime();
 
 		//Draws the menu, but only once
 		if (loadMenu) {
@@ -78,9 +69,9 @@ void Game::Run() {
 
 		//Zooms when the screen gets too big, so bigger res doesnt give that big of an advantage
 		if (GetScreenWidth() > 1800 || GetScreenHeight() > 1200) {
-			camera.zoom = 1.5f;
+			camera.zoom = 1.3f;
 		} else {
-			camera.zoom = 1.0f;
+			camera.zoom = 0.9f;
 		}
 
 		//Handle movement input from player
@@ -98,7 +89,6 @@ void Game::Run() {
 		}
 
 		//Update projectiles
-		float deltaTime = GetFrameTime();
 		updateProjectiles(projectileVector, deltaTime);
 
 		//Update enemies
@@ -107,7 +97,6 @@ void Game::Run() {
 			stop = !stop;
 			std::cout << "Enemies stopped: " << stop << std::endl;
 		}
-
 		if (!stop) {
 			updateEnemies(enemyVector, deltaTime, player);
 			killEnemies(projectileVector, enemyVector, player);
@@ -134,22 +123,29 @@ void Game::Run() {
 			ClearBackground(RAYWHITE);
 			BeginMode2D(camera);
 
-			//Render and update chunks
-			map.loadAndRenderChunks(player);
+				//Render and update chunks
+				map.loadAndRenderChunks(player);
+			
+				//Draw player and random square
+				DrawRectangle(300 * TILE_SIZE, 300 * TILE_SIZE, 3 * TILE_SIZE, 3 * TILE_SIZE, GREEN);
+				player.draw();
 
-			//Draw player and random square
-			DrawRectangle(300 * TILE_SIZE, 300 * TILE_SIZE, 3 * TILE_SIZE, 3 * TILE_SIZE, GREEN);
-			player.draw();
+				//Render enemies
+				drawEnemies(enemyVector);
 
-			//Render enemies
-			drawEnemies(enemyVector);
-
-			//Draw projectiles
-			drawProjectiles(projectileVector);
-
-			DrawFPS((int)player.x, (int)player.y + -400);
+				//Draw projectiles
+				drawProjectiles(projectileVector);
 
 			EndMode2D();
+
+			//Draw fps
+			DrawFPS(10, 10);
+
+			//Draw score
+			std::string s = "High Score: " + std::to_string(player.score);
+			int textWidth = MeasureText(s.c_str(), 30);
+			DrawText(s.c_str(), GetScreenWidth() / 2 - textWidth / 2, 10, 30, BLACK);
+
 		EndDrawing();
 	}
 	CloseWindow();
@@ -160,4 +156,5 @@ void Game::Reset() {
 	enemyVector = std::vector<std::unique_ptr<Enemy>>();
 	player = Player(100, 100, 1, 1.0f);
 	enemyLoader = EnemyLoader();
+	enemyLoader.setTextureLoader(textureLoader);
 }
