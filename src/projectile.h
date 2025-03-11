@@ -11,7 +11,7 @@ class Player;
 
 class Projectile : public Entity{
 public:
-	Projectile(Player player, float directionX, float directionY, int penetration);
+	Projectile(Player player, float directionX, float directionY, int penetration, Texture2D texture);
 
 	float directionX;
 	float directionY;
@@ -23,6 +23,8 @@ public:
 
 	bool keepAlive;
 	int aliveTime;
+
+	Texture2D texture;
 
 	std::unordered_set<int> shotEnemyIdSet;
 

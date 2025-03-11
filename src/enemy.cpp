@@ -20,7 +20,7 @@ void Enemy::draw() const {
 	float adjustX = 8.0f;
 	float adjustY = 10.0f;
 
-	Rectangle source = { 0, 0, texture.width, texture.height };
+	Rectangle source = { 0, 0, (float)texture.width, (float)texture.height };
 	Rectangle dest = { x, y, texture.width * scale, texture.height * scale };
 
 	// Start with the center of the texture as the origin

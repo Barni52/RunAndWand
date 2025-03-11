@@ -4,6 +4,7 @@
 #include "entity.h"
 #include <memory>
 #include <vector>
+#include "textureLoader.h"
 
 class Player : public Entity{
 public:
@@ -19,8 +20,11 @@ public:
 	double experienceToNextLevel;
 	int score;
 
-	Player(float x, float y, int penetration, float attackSpeed);
-	void shoot(const int mousePosX, const int mousePosY, std::vector<std::unique_ptr<Projectile>>& projectileVector);
+	Texture2D texture;
+
+	Player(float x, float y, int penetration, float attackSpeed, Texture2D texture);
+	void shoot(const int mousePosX, const int mousePosY, std::vector<std::unique_ptr<Projectile>>& projectileVector, TextureLoader& textureLoader);
+	Player();
 
 	void draw();
 };

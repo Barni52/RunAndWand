@@ -6,6 +6,7 @@ public:
 	Texture2D playerTexture;
 	Texture2D enemyTexture1;
 	Texture2D projectileTexture1;
+	Texture2D grassTexture;
 
 	TextureLoader();
 	~TextureLoader();

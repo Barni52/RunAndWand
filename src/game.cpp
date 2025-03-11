@@ -1,8 +1,7 @@
 ﻿#include "game.h"
 
 Game::Game()
-	: player(Player(100, 100, 1, 1.0f)),
-	map(Map()),
+	:
 	textureLoader(TextureLoader()),
 	enemyLoader(),
 	levelUpMenu(LevelUpMenu()),
@@ -24,6 +23,8 @@ Game::Game()
 
 	textureLoader.loadTextures();
 	enemyLoader.setTextureLoader(textureLoader);
+	player = Player(5000, 5000, 1, 1.0f, textureLoader.playerTexture);
+	map = Map(textureLoader);
 	
 
 }
@@ -73,6 +74,7 @@ void Game::Run() {
 		} else {
 			camera.zoom = 0.9f;
 		}
+		//camera.zoom = 0.1f;
 
 		//Handle movement input from player
 		handleInput(player);
@@ -85,7 +87,7 @@ void Game::Run() {
 			//The -1 is needed so that the projectile spawns from the middle of the player instead of its upper left corner
 			int targetX = (int)(((mousePos.x - GetScreenWidth() / 2.0f) / TILE_SIZE) + player.x - 1);
 			int targetY = (int)(((mousePos.y - GetScreenHeight() / 2.0f) / TILE_SIZE) + player.y - 1);
-			player.shoot(targetX, targetY, projectileVector);
+			player.shoot(targetX, targetY, projectileVector, textureLoader);
 		}
 
 		//Update projectiles
@@ -120,7 +122,7 @@ void Game::Run() {
 		BeginDrawing();
 
 			//Random shit to make raylib happy, no clue what this does
-			ClearBackground(RAYWHITE);
+			ClearBackground(BLACK);
 			BeginMode2D(camera);
 
 				//Render and update chunks
@@ -154,7 +156,7 @@ void Game::Run() {
 void Game::Reset() {
 	projectileVector = std::vector<std::unique_ptr<Projectile>>();
 	enemyVector = std::vector<std::unique_ptr<Enemy>>();
-	player = Player(100, 100, 1, 1.0f);
+	player = Player(5000, 5000, 1, 1.0f, textureLoader.playerTexture);
 	enemyLoader = EnemyLoader();
 	enemyLoader.setTextureLoader(textureLoader);
 }

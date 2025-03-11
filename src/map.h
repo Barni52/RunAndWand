@@ -6,14 +6,17 @@
 #define CHUNK_NUMBER WORLD_SIZE / CHUNK_SIZE
 #include <memory>
 #include <array>
+#include "textureLoader.h"
+#include "raylib.h"
 class Player;
 
 class Chunk {
 private:
 	int chunkX;
 	int chunkY;
+	Texture2D texture;
 public:
-	Chunk(int chunkX, int chunkY);
+	Chunk(int chunkX, int chunkY, Texture2D texture);
 	void draw() const;
 };
 
@@ -21,7 +24,10 @@ class Map {
 private:
 	//This disgusting piece of shit here is a 2d array with chunk pointers (please kill it)
 	std::array<std::array<std::unique_ptr<Chunk>, CHUNK_NUMBER>, CHUNK_NUMBER> chunks;
+
+	TextureLoader textureLoader;
 public:
 	Map();
+	Map(TextureLoader& textureLoader);
 	void loadAndRenderChunks(Player& player);
 };
